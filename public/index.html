@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Downloader Media Sosial Batch - Hapus Watermark Gratis</title>
+<meta name="description" content="Unduh video dan foto TikTok, Instagram Reels, Facebook, YouTube Shorts, Twitter, Pinterest, Threads tanpa watermark, beberapa link sekaligus per kloter, cepat dan gratis.">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --primary: #4F46E5;
+  --primary-hover: #4338CA;
+  --on-primary: #FFFFFF;
+  --bg-color: #F9FAFB;
+  --card-bg: #FFFFFF;
+  --soft-bg: #F3F4F6;
+  --text-main: #1F2937;
+  --text-muted: #6B7280;
+  --border-color: #E5E7EB;
+  --chip-active-bg: #EEF2FF;
+  --success: #059669;
+  --success-bg: #D1FAE5;
+  --success-text: #065F46;
+  --warn-bg: #FEF3C7;
+  --warn-text: #92400E;
+  --danger: #DC2626;
+  --danger-bg: #FEE2E2;
+  --danger-text: #991B1B;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --primary: #818CF8;
+    --primary-hover: #A5B4FC;
+    --on-primary: #111827;
+    --bg-color: #0F172A;
+    --card-bg: #1E293B;
+    --soft-bg: #0F172A;
+    --text-main: #F1F5F9;
+    --text-muted: #94A3B8;
+    --border-color: #334155;
+    --chip-active-bg: #312E81;
+    --success: #34D399;
+    --success-bg: #064E3B;
+    --success-text: #A7F3D0;
+    --warn-bg: #451A03;
+    --warn-text: #FDE68A;
+    --danger: #F87171;
+    --danger-bg: #450A0A;
+    --danger-text: #FECACA;
+    --shadow: none;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+
+header {
+  background-color: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem max(1rem, env(safe-area-inset-right)) 1rem max(1rem, env(safe-area-inset-left));
+  padding-top: max(1rem, env(safe-area-inset-top));
+  text-align: center;
+}
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.container {
+  width: 100%;
+  max-width: 900px;
+  margin: 1.5rem auto;
+  padding: 0 max(1rem, env(safe-area-inset-right)) 0 max(1rem, env(safe-area-inset-left));
+  flex: 1;
+}
+
+.ad-space {
+  background: var(--soft-bg);
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  text-align: center;
+  padding: 1rem;
+  margin: 1.25rem 0;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.tool-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+}
+@media (min-width: 640px) { .tool-card { padding: 2rem; } }
+
+.tool-title { text-align: center; margin-bottom: 1.5rem; }
+.tool-title h1 { font-size: 1.4rem; line-height: 1.3; margin-bottom: 0.5rem; text-wrap: balance; }
+@media (min-width: 640px) { .tool-title h1 { font-size: 1.75rem; } }
+.tool-title p { color: var(--text-muted); }
+
+.banner {
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  margin-bottom: 1.25rem;
+}
+.banner.warn { background: var(--warn-bg); color: var(--warn-text); }
+
+.mode-tabs { display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+.tab-btn {
+  flex: 1 1 0;
+  max-width: 200px;
+  padding: 0.65rem 1rem;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  border-radius: 8px;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.tab-btn.active { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
+
+.platform-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-bottom: 1.25rem; }
+.platform-btn {
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 0.9rem;
+  border-radius: 20px;
+  background: var(--card-bg);
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s;
+}
+.platform-btn.active {
+  border-color: var(--primary);
+  color: var(--primary);
+  font-weight: 600;
+  background: var(--chip-active-bg);
+}
+
+.field-label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.4rem; }
+.input-field {
+  display: block;
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem; /* 16px mencegah zoom otomatis di iPhone */
+  background: var(--card-bg);
+  resize: vertical;
+  min-height: 7.5rem;
+  line-height: 1.4;
+}
+.input-field:focus { outline: 2px solid var(--primary); border-color: var(--primary); }
+.input-hint { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem; }
+
+.options-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 1.5rem; margin: 1.25rem 0; font-size: 0.9rem; color: var(--text-muted); }
+.check { display: inline-flex; align-items: center; gap: 0.5rem; }
+.check input { width: 1.1rem; height: 1.1rem; accent-color: var(--primary); }
+.select-wrap { display: inline-flex; align-items: center; gap: 0.5rem; }
+.select-wrap select { padding: 0.35rem 0.5rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); }
+
+.btn-submit {
+  width: 100%;
+  background: var(--primary);
+  color: var(--on-primary);
+  border: none;
+  padding: 0.9rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-submit:hover:not(:disabled) { background: var(--primary-hover); }
+.btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.status-container { margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border-color); }
+.status-container h2 { font-size: 1.1rem; text-align: center; }
+.status-sub { font-size: 0.85rem; color: var(--text-muted); text-align: center; overflow-wrap: anywhere; }
+.progress-bar { width: 100%; height: 10px; background: var(--border-color); border-radius: 5px; overflow: hidden; margin: 0.9rem 0; }
+.progress-fill { height: 100%; width: 0%; background: var(--primary); transition: width 0.4s ease, background 0.2s; }
+.progress-fill.error { background: var(--danger); }
+
+.kloter-bar { display: grid; gap: 0.75rem; margin-top: 1rem; }
+.batch-card {
+  background: var(--soft-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+  min-width: 0;
+}
+.batch-header { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.batch-header > div { min-width: 0; }
+.badge { display: inline-block; font-size: 0.75rem; background: var(--success-bg); color: var(--success-text); padding: 2px 8px; border-radius: 4px; margin-left: 0.4rem; vertical-align: middle; }
+.badge.warn { background: var(--warn-bg); color: var(--warn-text); }
+.muted { font-size: 0.8rem; color: var(--text-muted); }
+
+.btn-download {
+  background: var(--success);
+  color: #FFFFFF;
+  border: none;
+  padding: 0.55rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+.btn-download:hover { filter: brightness(1.08); }
+.btn-download:disabled { opacity: 0.6; cursor: wait; }
+@media (prefers-color-scheme: dark) { .btn-download { color: #052E1B; } }
+.btn-secondary { background: transparent; color: var(--primary); border: 1px solid var(--primary); padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; }
+
+.link-title { font-weight: 600; overflow-wrap: anywhere; }
+.item-list { display: grid; gap: 0.6rem; margin-top: 0.6rem; }
+.item-row {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+.thumb { width: 56px; height: 56px; border-radius: 6px; object-fit: cover; background: var(--soft-bg); display: flex; align-items: center; justify-content: center; color: var(--text-muted); }
+.item-meta { min-width: 0; font-size: 0.85rem; }
+.item-meta strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.error-row { background: var(--danger-bg); color: var(--danger-text); border-radius: 8px; padding: 0.6rem 0.8rem; font-size: 0.85rem; margin-top: 0.6rem; overflow-wrap: anywhere; }
+.note-row { background: var(--warn-bg); color: var(--warn-text); border-radius: 8px; padding: 0.6rem 0.8rem; font-size: 0.85rem; margin-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; justify-content: space-between; }
+
+@media (max-width: 480px) {
+  .item-row { grid-template-columns: 48px minmax(0, 1fr); }
+  .item-row .btn-download { grid-column: 1 / -1; }
+  .thumb { width: 48px; height: 48px; }
+  .batch-header .btn-download { width: 100%; }
+  .platform-btn { font-size: 0.85rem; padding: 0.45rem 0.75rem; }
+}
+
+.legal { font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-top: 1.25rem; }
+footer {
+  text-align: center;
+  padding: 1.5rem max(1rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+  border-top: 1px solid var(--border-color);
+  background: var(--card-bg);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 2rem;
+}
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header>
+  <a href="/" class="logo"><i class="fa-solid fa-cloud-arrow-down" aria-hidden="true"></i> MediaBatchSave</a>
+</header>
+
+<main class="container">
+  <div class="ad-space"><span>[ Ruang Iklan Banner Atas Header - 728x90 ]</span></div>
+
+  <section class="tool-card">
+    <div class="tool-title">
+      <h1>Unduh Media Sosial Batch &amp; Tanpa Watermark</h1>
+      <p>Tempel satu atau beberapa link postingan (maksimal 25), lalu unduh hasilnya per kloter dalam file ZIP.</p>
+    </div>
+
+    <div id="configBanner" class="banner warn" role="status" hidden></div>
+
+    <div class="mode-tabs" role="group" aria-label="Jenis media">
+      <button type="button" class="tab-btn active" id="btnModeVideo" aria-pressed="true"><i class="fa-solid fa-video" aria-hidden="true"></i> Mode Video</button>
+      <button type="button" class="tab-btn" id="btnModeImage" aria-pressed="false"><i class="fa-solid fa-image" aria-hidden="true"></i> Mode Foto</button>
+    </div>
+
+    <div class="platform-grid" id="platformGrid" role="group" aria-label="Platform"></div>
+
+    <label class="field-label" for="profileUrl">Link postingan (satu link per baris)</label>
+    <textarea id="profileUrl" class="input-field" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off" inputmode="url" placeholder="https://www.tiktok.com/@nama_akun/video/1234567890"></textarea>
+    <div class="input-hint">
+      <span id="linkCount">0 link</span>
+      <span>Link profil/akun belum didukung, gunakan link per postingan.</span>
+    </div>
+
+    <div class="options-row">
+      <label class="check" for="noWatermark">
+        <input type="checkbox" id="noWatermark" checked>
+        <span><b>Hapus Watermark Otomatis</b> (pilih versi bersih, HD jika ada)</span>
+      </label>
+      <label class="select-wrap" for="batchSize">
+        <span>File per kloter</span>
+        <select id="batchSize">
+          <option value="10">10</option>
+          <option value="15">15</option>
+          <option value="20" selected>20</option>
+          <option value="25">25</option>
+        </select>
+      </label>
+    </div>
+
+    <button type="button" class="btn-submit" id="btnSubmit"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> <span id="btnSubmitText">Proses Link</span></button>
+
+    <div id="statusContainer" class="status-container" hidden>
+      <h2 id="statusText" aria-live="polite">Memproses...</h2>
+      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar"><div id="progressFill" class="progress-fill"></div></div>
+      <p id="statusSub" class="status-sub"></p>
+      <div id="kloterBar" class="kloter-bar"></div>
+      <div id="batchResults"></div>
+    </div>
+
+    <p class="legal">Gunakan hanya untuk konten milik sendiri atau yang sudah mendapat izin pembuatnya. Hak cipta tetap milik pemilik konten dan aturan tiap platform berlaku.</p>
+  </section>
+
+  <div class="ad-space"><span>[ Ruang Iklan Native / Banner Bawah Tool ]</span></div>
+</main>
+
+<footer>
+  <p>&copy; 2026 MediaBatchSave - All-in-One Social Media Batch Downloader Utility.</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var MAX_LINKS = 25;
+  var PLATFORMS = [
+    { name: 'TikTok', icon: 'fa-brands fa-tiktok', label: 'TikTok', hosts: ['tiktok.com'], example: 'https://www.tiktok.com/@nama_akun/video/1234567890' },
+    { name: 'Instagram', icon: 'fa-brands fa-instagram', label: 'Instagram', hosts: ['instagram.com', 'instagr.am'], example: 'https://www.instagram.com/reel/AbCdEfGhIjK/' },
+    { name: 'Facebook', icon: 'fa-brands fa-facebook', label: 'Facebook', hosts: ['facebook.com', 'fb.watch', 'fb.com'], example: 'https://www.facebook.com/watch/?v=1234567890' },
+    { name: 'YouTube', icon: 'fa-brands fa-youtube', label: 'Shorts', hosts: ['youtube.com', 'youtu.be'], example: 'https://www.youtube.com/shorts/AbCdEfGhIjK' },
+    { name: 'Twitter', icon: 'fa-brands fa-twitter', label: 'Twitter/X', hosts: ['twitter.com', 'x.com'], example: 'https://x.com/akun/status/1234567890' },
+    { name: 'Pinterest', icon: 'fa-brands fa-pinterest', label: 'Pinterest', hosts: ['pinterest.com', 'pin.it'], example: 'https://www.pinterest.com/pin/1234567890/' },
+    { name: 'Threads', icon: 'fa-solid fa-at', label: 'Threads', hosts: ['threads.net', 'threads.com'], example: 'https://www.threads.net/@akun/post/AbCdEfGhIjK' }
+  ];
+
+  var state = { mode: 'video', platform: 'TikTok', busy: false, results: [], configured: true };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var els = {
+    input: $('profileUrl'), count: $('linkCount'), submit: $('btnSubmit'), submitText: $('btnSubmitText'),
+    status: $('statusContainer'), statusText: $('statusText'), statusSub: $('statusSub'),
+    fill: $('progressFill'), bar: $('progressBar'), results: $('batchResults'), kloter: $('kloterBar'),
+    banner: $('configBanner'), noWm: $('noWatermark'), size: $('batchSize'), grid: $('platformGrid')
+  };
+
+  function el(tag, props, children) {
+    var n = document.createElement(tag);
+    props = props || {};
+    Object.keys(props).forEach(function (k) {
+      if (k === 'class') n.className = props[k];
+      else if (k === 'text') n.textContent = props[k];
+      else if (k === 'on') Object.keys(props.on).forEach(function (ev) { n.addEventListener(ev, props.on[ev]); });
+      else n.setAttribute(k, props[k]);
+    });
+    (children || []).forEach(function (c) { if (c) n.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+    return n;
+  }
+  function icon(cls) { return el('i', { 'class': cls, 'aria-hidden': 'true' }); }
+
+  // ---------- link ----------
+  function hostPlatform(host) {
+    host = host.toLowerCase();
+    for (var i = 0; i < PLATFORMS.length; i++) {
+      if (PLATFORMS[i].hosts.some(function (d) { return host === d || host.slice(-d.length - 1) === '.' + d; })) return PLATFORMS[i].name;
+    }
+    return null;
+  }
+  function parseLinks(text) {
+    var seen = {}, out = [];
+    text.split(/[\s,]+/).forEach(function (t) {
+      t = t.trim();
+      if (t && !seen[t]) { seen[t] = 1; out.push(t); }
+    });
+    return out;
+  }
+  function updateCount() {
+    var n = parseLinks(els.input.value).length;
+    els.count.textContent = n + ' link' + (n > MAX_LINKS ? ' (hanya ' + MAX_LINKS + ' pertama yang diproses)' : '');
+    var first = parseLinks(els.input.value)[0];
+    if (first) {
+      try {
+        var p = hostPlatform(new URL(first).hostname);
+        if (p && p !== state.platform) setPlatform(p);
+      } catch (e) { /* belum link valid */ }
+    }
+  }
+
+  // ---------- mode & platform ----------
+  function setMode(mode) {
+    state.mode = mode;
+    $('btnModeVideo').classList.toggle('active', mode === 'video');
+    $('btnModeImage').classList.toggle('active', mode === 'image');
+    $('btnModeVideo').setAttribute('aria-pressed', String(mode === 'video'));
+    $('btnModeImage').setAttribute('aria-pressed', String(mode === 'image'));
+    renderResults();
+  }
+  function setPlatform(name) {
+    state.platform = name;
+    PLATFORMS.forEach(function (p) {
+      var b = $('plat-' + p.name);
+      b.classList.toggle('active', p.name === name);
+      b.setAttribute('aria-pressed', String(p.name === name));
+      if (p.name === name) els.input.placeholder = p.example;
+    });
+  }
+  PLATFORMS.forEach(function (p) {
+    els.grid.appendChild(el('button', { type: 'button', id: 'plat-' + p.name, 'class': 'platform-btn', 'aria-pressed': 'false', on: { click: function () { setPlatform(p.name); } } },
+      [icon(p.icon), p.label]));
+  });
+  setPlatform('TikTok');
+  $('btnModeVideo').addEventListener('click', function () { setMode('video'); });
+  $('btnModeImage').addEventListener('click', function () { setMode('image'); });
+  els.noWm.addEventListener('change', renderResults);
+  els.size.addEventListener('change', renderResults);
+  els.input.addEventListener('input', updateCount);
+  els.input.addEventListener('paste', function () { setTimeout(updateCount, 0); });
+  els.submit.addEventListener('click', startScanning);
+
+  // ---------- status ----------
+  function setProgress(pct, isError) {
+    els.fill.style.width = pct + '%';
+    els.fill.classList.toggle('error', !!isError);
+    els.bar.setAttribute('aria-valuenow', String(Math.round(pct)));
+  }
+  function showStatus(title, sub, pct, isError) {
+    els.status.hidden = false;
+    els.statusText.textContent = title;
+    els.statusSub.textContent = sub || '';
+    if (pct != null) setProgress(pct, isError);
+  }
+
+  // ---------- konfigurasi server ----------
+  function checkHealth() {
+    if (location.protocol === 'file:') {
+      state.configured = false;
+      els.banner.hidden = false;
+      els.banner.textContent = 'Halaman dibuka langsung dari file. Deploy proyek ini ke Netlify (lihat README) lalu buka lewat alamat website agar pengunduhan berfungsi.';
+      return;
+    }
+    fetch('/api/health', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (d) {
+      if (d && d.configured === false) {
+        state.configured = false;
+        els.banner.hidden = false;
+        els.banner.textContent = 'Server belum dihubungkan ke API unduhan. Pemilik situs perlu mengisi RAPIDAPI_KEY dan RAPIDAPI_HOST di pengaturan Netlify.';
+      }
+    }).catch(function () {
+      state.configured = false;
+      els.banner.hidden = false;
+      els.banner.textContent = 'Server unduhan tidak ditemukan. Pastikan situs di-deploy lengkap dengan folder netlify/functions (lihat README).';
+    });
+  }
+
+  // ---------- proses ----------
+  async function fetchOne(link) {
+    var ctrl = new AbortController();
+    var timer = setTimeout(function () { ctrl.abort(); }, 40000);
+    try {
+      var r = await fetch('/api/download?url=' + encodeURIComponent(link), { signal: ctrl.signal });
+      var data = null;
+      try { data = await r.json(); } catch (e) { /* bukan JSON */ }
+      if (!r.ok || !data) {
+        throw new Error((data && data.message) || 'Server tidak merespons dengan benar (kode ' + r.status + ').');
+      }
+      return data;
+    } catch (e) {
+      if (e.name === 'AbortError') throw new Error('Waktu habis. Coba lagi beberapa saat.');
+      if (e instanceof TypeError) throw new Error('Tidak bisa terhubung ke server. Periksa koneksi internet.');
+      throw e;
+    } finally { clearTimeout(timer); }
+  }
+
+  async function startScanning() {
+    if (state.busy) return;
+    var all = parseLinks(els.input.value);
+    if (!all.length) {
+      showStatus('Link belum diisi', 'Tempelkan minimal satu link postingan.', 0, true);
+      els.input.focus();
+      return;
+    }
+    var links = all.slice(0, MAX_LINKS);
+    state.busy = true;
+    state.results = [];
+    els.submit.disabled = true;
+    els.submitText.textContent = 'Memproses...';
+    els.kloter.textContent = '';
+    els.results.textContent = '';
+    showStatus('Memproses ' + links.length + ' link...', 'Menghubungi server unduhan.', 3, false);
+
+    var ok = 0;
+    for (var i = 0; i < links.length; i++) {
+      var link = links[i];
+      showStatus('Memproses link ' + (i + 1) + ' dari ' + links.length, link, 3 + (i / links.length) * 97, false);
+      var entry = { link: link };
+      var valid = true;
+      try { valid = /^https?:$/.test(new URL(link).protocol); } catch (e) { valid = false; }
+      if (!valid) {
+        entry.error = 'Bukan link yang valid. Awali dengan https://';
+      } else {
+        try { entry.data = await fetchOne(link); ok++; } catch (e) { entry.error = e.message; }
+      }
+      state.results.push(entry);
+      renderResults();
+    }
+    var failed = links.length - ok;
+    var extra = all.length > MAX_LINKS ? ' ' + (all.length - MAX_LINKS) + ' link lain diabaikan (batas ' + MAX_LINKS + ').' : '';
+    if (ok === 0) showStatus('Tidak ada link yang berhasil', 'Periksa pesan pada tiap link di bawah.' + extra, 100, true);
+    else showStatus('Selesai: ' + ok + ' link berhasil' + (failed ? ', ' + failed + ' gagal' : ''), 'Unduh per file atau per kloter (.ZIP).' + extra, 100, false);
+    state.busy = false;
+    els.submit.disabled = false;
+    els.submitText.textContent = 'Proses Link';
+  }
+
+  // ---------- tampilan hasil ----------
+  function visibleItems(data) {
+    var list = data.items.filter(function (it) { return it.type === state.mode; });
+    var note = null;
+    if (els.noWm.checked && list.length) {
+      var clean = list.filter(function (it) { return !it.watermark; });
+      if (clean.length) list = clean;
+      else note = 'Hanya versi berwatermark yang tersedia dari sumbernya.';
+    }
+    return { list: list, note: note };
+  }
+
+  function renderResults() {
+    els.results.textContent = '';
+    els.kloter.textContent = '';
+    var flat = [];
+    state.results.forEach(function (entry) {
+      var card = el('div', { 'class': 'batch-card' });
+      if (entry.error) {
+        card.appendChild(el('div', { 'class': 'link-title', text: entry.link }));
+        card.appendChild(el('div', { 'class': 'error-row', text: entry.error }));
+        els.results.appendChild(card);
+        return;
+      }
+      var d = entry.data;
+      var vis = visibleItems(d);
+      var head = el('div', { 'class': 'batch-header' }, [
+        el('div', {}, [
+          el('div', { 'class': 'link-title', text: d.title || 'Media dari ' + d.platform }),
+          el('div', { 'class': 'muted', text: d.platform + (d.author ? ' · ' + d.author : '') })
+        ])
+      ]);
+      card.appendChild(head);
+      if (!vis.list.length) {
+        var other = state.mode === 'video' ? 'image' : 'video';
+        var n = d.items.filter(function (it) { return it.type === other; }).length;
+        var row = el('div', { 'class': 'note-row' }, [
+          el('span', { text: 'Tidak ada ' + (state.mode === 'video' ? 'video' : 'foto') + ' di postingan ini' + (n ? ' (ada ' + n + ' ' + (other === 'video' ? 'video' : 'foto') + ').' : '.') })
+        ]);
+        if (n) row.appendChild(el('button', { type: 'button', 'class': 'btn-secondary', text: 'Pindah ke ' + (other === 'video' ? 'Mode Video' : 'Mode Foto'), on: { click: function () { setMode(other); } } }));
+        card.appendChild(row);
+      } else {
+        if (vis.note) card.appendChild(el('div', { 'class': 'note-row', text: vis.note }));
+        var listEl = el('div', { 'class': 'item-list' });
+        vis.list.forEach(function (it) {
+          flat.push({ it: it, title: d.title });
+          listEl.appendChild(itemRow(it));
+        });
+        card.appendChild(listEl);
+      }
+      els.results.appendChild(card);
+    });
+    renderKloters(flat);
+  }
+
+  function itemRow(it) {
+    var thumb;
+    if (it.thumb) {
+      thumb = el('img', { 'class': 'thumb', src: it.thumb, alt: '', loading: 'lazy', referrerpolicy: 'no-referrer' });
+      thumb.addEventListener('error', function () {
+        var ph = el('div', { 'class': 'thumb' }, [icon(it.type === 'video' ? 'fa-solid fa-film' : 'fa-solid fa-image')]);
+        if (thumb.parentNode) thumb.parentNode.replaceChild(ph, thumb);
+      });
+    } else {
+      thumb = el('div', { 'class': 'thumb' }, [icon(it.type === 'video' ? 'fa-solid fa-film' : 'fa-solid fa-image')]);
+    }
+    var label = (it.type === 'video' ? 'Video' : 'Foto') + (it.quality ? ' ' + it.quality : '') + ' · ' + it.ext.toUpperCase();
+    var meta = el('div', { 'class': 'item-meta' }, [
+      el('strong', { text: label }),
+      el('span', { 'class': 'badge ' + (it.watermark ? 'warn' : ''), text: it.watermark ? 'Berwatermark' : 'Tanpa watermark', style: 'margin-left:0' })
+    ]);
+    var a = el('a', { 'class': 'btn-download', href: it.file, download: it.name }, [icon('fa-solid fa-download'), 'Unduh']);
+    return el('div', { 'class': 'item-row' }, [thumb, meta, a]);
+  }
+
+  function renderKloters(flat) {
+    if (!flat.length) return;
+    var size = parseInt(els.size.value, 10) || 20;
+    var chunks = [];
+    for (var i = 0; i < flat.length; i += size) chunks.push(flat.slice(i, i + size));
+    chunks.forEach(function (chunk, idx) {
+      var btn = el('button', { type: 'button', 'class': 'btn-download' }, [icon('fa-solid fa-file-zipper'), 'Unduh Kloter ' + (idx + 1) + ' (.ZIP)']);
+      var sub = el('p', { 'class': 'muted', text: chunk.length + ' ' + (state.mode === 'video' ? 'video' : 'foto') });
+      btn.addEventListener('click', function () { downloadZip(chunk, idx + 1, btn, sub); });
+      els.kloter.appendChild(el('div', { 'class': 'batch-card', style: 'margin-top:0' }, [
+        el('div', { 'class': 'batch-header', style: 'margin-bottom:0.25rem' }, [
+          el('div', {}, [el('strong', { text: 'Kloter ' + (idx + 1) }), el('span', { 'class': 'badge', text: state.mode === 'video' ? 'Video' : 'Foto' })]),
+          btn
+        ]),
+        sub
+      ]));
+    });
+  }
+
+  // ---------- ZIP ----------
+  function triggerSave(blob, name) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 30000);
+  }
+
+  async function downloadZip(chunk, number, btn, sub) {
+    if (btn.disabled) return;
+    btn.disabled = true;
+    try {
+      if (typeof JSZip === 'undefined') throw new Error('Pustaka ZIP gagal dimuat. Unduh file satu per satu dengan tombol Unduh.');
+      var zip = new JSZip();
+      var done = 0, failed = 0, next = 0;
+      var used = {};
+      async function worker() {
+        while (next < chunk.length) {
+          var c = chunk[next++];
+          try {
+            var r = await fetch(c.it.file);
+            if (!r.ok) throw new Error('gagal');
+            var blob = await r.blob();
+            var name = c.it.name;
+            if (used[name]) name = (used[name]++) + '_' + name; else used[name] = 1;
+            zip.file(name, blob);
+          } catch (e) { failed++; }
+          done++;
+          sub.textContent = 'Mengunduh ' + done + ' dari ' + chunk.length + '...';
+        }
+      }
+      await Promise.all([worker(), worker(), worker()]);
+      if (failed === chunk.length) throw new Error('Semua file gagal diambil. Proses link sekali lagi lalu coba lagi.');
+      sub.textContent = 'Menyusun ZIP...';
+      var out = await zip.generateAsync({ type: 'blob', compression: 'STORE' });
+      triggerSave(out, 'MediaBatchSave_kloter_' + number + '.zip');
+      sub.textContent = (chunk.length - failed) + ' file diunduh' + (failed ? ', ' + failed + ' gagal' : '') + '.';
+    } catch (e) {
+      sub.textContent = e.message || 'Gagal membuat ZIP.';
+    } finally {
+      btn.disabled = false;
+    }
+  }
+
+  updateCount();
+  checkHealth();
+})();
+</script>
+</body>
+</html>
