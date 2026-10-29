@@ -308,6 +308,7 @@ async function handleFile(url, env) {
   if (isPrivateHost(src.hostname)) return json({ error: 'forbidden' }, 403);
 
   let up;
+  let fallbackUrl = src.href;
   try {
     if (detectPlatform(src.hostname) === 'YouTube') {
       if (!/^(144|240|360|480|720|1080)p$/i.test(quality)) {
@@ -339,6 +340,7 @@ async function handleFile(url, env) {
       if (mediaUrl.protocol !== 'https:' || mediaUrl.username || mediaUrl.password || isPrivateHost(mediaUrl.hostname)) {
         return json({ error: 'bad_response', message: 'SaveAPI returned an invalid YouTube stream URL.' }, 502);
       }
+      fallbackUrl = mediaUrl.href;
       up = await fetchSafeMedia(mediaUrl.href);
     } else {
       up = await fetchSafeMedia(src.href);
@@ -352,7 +354,7 @@ async function handleFile(url, env) {
   if (size > Number(env.MAX_PROXY_BYTES || 19500000)) {
     // Terlalu besar untuk diteruskan lewat Netlify (batas 20 MB): buka langsung dari sumbernya.
     try { await up.body.cancel(); } catch { /* abaikan */ }
-    return new Response(null, { status: 302, headers: { location: src.href, 'cache-control': 'no-store' } });
+    return new Response(null, { status: 302, headers: { location: fallbackUrl, 'cache-control': 'no-store' } });
   }
 
   const headers = new Headers();
