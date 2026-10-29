@@ -725,7 +725,7 @@ footer {
       if (failed === chunk.length) throw new Error('All files failed to download. Process the links again and retry.');
       sub.textContent = 'Creating ZIP…';
       var out = await zip.generateAsync({ type: 'blob', compression: 'STORE' });
-      triggerSave(out, 'MediaBatchSave_kloter_' + number + '.zip');
+      triggerSave(out, 'MediaSaveDownload_batch_' + number + '.zip');
       sub.textContent = (chunk.length - failed) + ' videos downloaded' + (failed ? ', ' + failed + ' failed' : '') + '.';
     } catch (e) {
       sub.textContent = e.message || 'Could not create the ZIP file.';
