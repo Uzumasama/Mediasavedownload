@@ -32,6 +32,7 @@ export default async (request, env) => {
     if (url.pathname === '/api/health') return health(env);
     if (url.pathname === '/api/download') return await handleDownload(url, env);
     if (url.pathname === '/api/file') return await handleFile(url, env);
+    if (env.ASSETS) return env.ASSETS.fetch(request);
   } catch (err) {
     return json({ error: 'server_error', message: 'Terjadi kesalahan di server. Coba lagi sebentar.' }, 500);
   }
