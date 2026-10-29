@@ -3,305 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="color-scheme" content="light dark">
-<title>Free Social Media Video Downloader | MediaSaveDownload</title>
-<meta name="description" content="Download supported public videos from TikTok, Instagram Reels, Facebook Reels, YouTube Shorts and Pinterest. Paste links and save videos in batches for personal use.">
-<meta name="keywords" content="TikTok video downloader, Instagram Reels downloader, Facebook Reels downloader, YouTube Shorts downloader, Pinterest video downloader, social media video downloader">
+<meta name="color-scheme" content="light">
+<title>Free Video Downloader for TikTok, Reels & Shorts | MediaSaveDownload</title>
+<meta name="description" content="Save supported public videos from TikTok, Instagram Reels, Facebook Reels, YouTube Shorts and Pinterest. Paste links and download videos individually or in batches.">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#10152b">
 <link rel="canonical" href="https://mediasavedownload.cokso344.workers.dev/">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="MediaSaveDownload">
 <meta property="og:url" content="https://mediasavedownload.cokso344.workers.dev/">
-<meta property="og:title" content="Free Social Media Video Downloader | MediaSaveDownload">
-<meta property="og:description" content="Download supported public videos from TikTok, Instagram Reels, Facebook Reels, YouTube Shorts and Pinterest in one simple tool.">
+<meta property="og:title" content="MediaSaveDownload — Free Social Video Downloader">
+<meta property="og:description" content="Save supported public videos from TikTok, Instagram Reels, Facebook Reels, YouTube Shorts and Pinterest.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Free Social Media Video Downloader | MediaSaveDownload">
-<meta name="twitter:description" content="Save supported social media videos from TikTok, Reels, YouTube Shorts and Pinterest.">
-<meta name="theme-color" content="#4F46E5">
-<meta name="robots" content="index, follow">
+<meta name="twitter:title" content="MediaSaveDownload — Free Social Video Downloader">
+<meta name="twitter:description" content="Save supported social videos in a few simple steps.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%236d5efc'/%3E%3Cpath d='M32 12v25m-10-9 10 10 10-10M15 42v7a3 3 0 0 0 3 3h28a3 3 0 0 0 3-3v-7' fill='none' stroke='white' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-:root {
-  --primary: #4F46E5;
-  --primary-hover: #4338CA;
-  --on-primary: #FFFFFF;
-  --bg-color: #F9FAFB;
-  --card-bg: #FFFFFF;
-  --soft-bg: #F3F4F6;
-  --text-main: #1F2937;
-  --text-muted: #6B7280;
-  --border-color: #E5E7EB;
-  --chip-active-bg: #EEF2FF;
-  --success: #059669;
-  --success-bg: #D1FAE5;
-  --success-text: #065F46;
-  --warn-bg: #FEF3C7;
-  --warn-text: #92400E;
-  --danger: #DC2626;
-  --danger-bg: #FEE2E2;
-  --danger-text: #991B1B;
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-  color-scheme: light;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --primary: #818CF8;
-    --primary-hover: #A5B4FC;
-    --on-primary: #111827;
-    --bg-color: #0F172A;
-    --card-bg: #1E293B;
-    --soft-bg: #0F172A;
-    --text-main: #F1F5F9;
-    --text-muted: #94A3B8;
-    --border-color: #334155;
-    --chip-active-bg: #312E81;
-    --success: #34D399;
-    --success-bg: #064E3B;
-    --success-text: #A7F3D0;
-    --warn-bg: #451A03;
-    --warn-text: #FDE68A;
-    --danger: #F87171;
-    --danger-bg: #450A0A;
-    --danger-text: #FECACA;
-    --shadow: none;
-    color-scheme: dark;
-  }
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-text-size-adjust: 100%; }
-body {
-  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-main);
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  min-height: 100dvh;
-  line-height: 1.5;
-  overflow-x: hidden;
-}
-button, input, textarea, select { font: inherit; color: inherit; }
-button { cursor: pointer; }
-:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
-
-header {
-  background-color: var(--card-bg);
-  border-bottom: 1px solid var(--border-color);
-  padding: 1rem max(1rem, env(safe-area-inset-right)) 1rem max(1rem, env(safe-area-inset-left));
-  padding-top: max(1rem, env(safe-area-inset-top));
-  text-align: center;
-}
-.logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--primary);
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.container {
-  width: 100%;
-  max-width: 900px;
-  margin: 1.5rem auto;
-  padding: 0 max(1rem, env(safe-area-inset-right)) 0 max(1rem, env(safe-area-inset-left));
-  flex: 1;
-}
-
-.ad-space {
-  background: var(--soft-bg);
-  border: 1px dashed var(--border-color);
-  border-radius: 8px;
-  text-align: center;
-  padding: 1rem;
-  margin: 1.25rem 0;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  min-height: 90px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.tool-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 1.25rem;
-  box-shadow: var(--shadow);
-}
-@media (min-width: 640px) { .tool-card { padding: 2rem; } }
-
-.tool-title { text-align: center; margin-bottom: 1.5rem; }
-.tool-title h1 { font-size: 1.4rem; line-height: 1.3; margin-bottom: 0.5rem; text-wrap: balance; }
-@media (min-width: 640px) { .tool-title h1 { font-size: 1.75rem; } }
-.tool-title p { color: var(--text-muted); }
-
-.banner {
-  border-radius: 8px;
-  padding: 0.75rem 1rem;
-  font-size: 0.9rem;
-  margin-bottom: 1.25rem;
-}
-.banner.warn { background: var(--warn-bg); color: var(--warn-text); }
-
-.mode-tabs { display: flex; justify-content: center; gap: 0.75rem; margin-bottom: 1.25rem; }
-.tab-btn {
-  flex: 1 1 0;
-  max-width: 200px;
-  padding: 0.65rem 1rem;
-  border: 1px solid var(--border-color);
-  background: var(--card-bg);
-  border-radius: 8px;
-  font-weight: 500;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
-}
-.tab-btn.active { background: var(--primary); color: var(--on-primary); border-color: var(--primary); }
-
-.platform-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin-bottom: 1.25rem; }
-.platform-btn {
-  border: 1px solid var(--border-color);
-  padding: 0.5rem 0.9rem;
-  border-radius: 20px;
-  background: var(--card-bg);
-  font-size: 0.9rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  transition: all 0.2s;
-}
-.platform-btn.active {
-  border-color: var(--primary);
-  color: var(--primary);
-  font-weight: 600;
-  background: var(--chip-active-bg);
-}
-
-.field-label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.4rem; }
-.input-field {
-  display: block;
-  width: 100%;
-  padding: 0.8rem 1rem;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  font-size: 1rem; /* 16px mencegah zoom otomatis di iPhone */
-  background: var(--card-bg);
-  resize: vertical;
-  min-height: 7.5rem;
-  line-height: 1.4;
-}
-.input-field:focus { outline: 2px solid var(--primary); border-color: var(--primary); }
-.input-hint { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem; }
-
-.options-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem 1.5rem; margin: 1.25rem 0; font-size: 0.9rem; color: var(--text-muted); }
-.check { display: inline-flex; align-items: center; gap: 0.5rem; }
-.check input { width: 1.1rem; height: 1.1rem; accent-color: var(--primary); }
-.select-wrap { display: inline-flex; align-items: center; gap: 0.5rem; }
-.select-wrap select { padding: 0.35rem 0.5rem; border: 1px solid var(--border-color); border-radius: 6px; background: var(--card-bg); }
-
-.btn-submit {
-  width: 100%;
-  background: var(--primary);
-  color: var(--on-primary);
-  border: none;
-  padding: 0.9rem 1.5rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  transition: background 0.2s;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-.btn-submit:hover:not(:disabled) { background: var(--primary-hover); }
-.btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
-
-.status-container { margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid var(--border-color); }
-.status-container h2 { font-size: 1.1rem; text-align: center; }
-.status-sub { font-size: 0.85rem; color: var(--text-muted); text-align: center; overflow-wrap: anywhere; }
-.progress-bar { width: 100%; height: 10px; background: var(--border-color); border-radius: 5px; overflow: hidden; margin: 0.9rem 0; }
-.progress-fill { height: 100%; width: 0%; background: var(--primary); transition: width 0.4s ease, background 0.2s; }
-.progress-fill.error { background: var(--danger); }
-
-.kloter-bar { display: grid; gap: 0.75rem; margin-top: 1rem; }
-.batch-card {
-  background: var(--soft-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 1rem;
-  margin-top: 1rem;
-  min-width: 0;
-}
-.batch-header { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
-.batch-header > div { min-width: 0; }
-.badge { display: inline-block; font-size: 0.75rem; background: var(--success-bg); color: var(--success-text); padding: 2px 8px; border-radius: 4px; margin-left: 0.4rem; vertical-align: middle; }
-.badge.warn { background: var(--warn-bg); color: var(--warn-text); }
-.muted { font-size: 0.8rem; color: var(--text-muted); }
-
-.btn-download {
-  background: var(--success);
-  color: #FFFFFF;
-  border: none;
-  padding: 0.55rem 1rem;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  white-space: nowrap;
-}
-.btn-download:hover { filter: brightness(1.08); }
-.btn-download:disabled { opacity: 0.6; cursor: wait; }
-@media (prefers-color-scheme: dark) { .btn-download { color: #052E1B; } }
-.btn-secondary { background: transparent; color: var(--primary); border: 1px solid var(--primary); padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 600; font-size: 0.85rem; }
-
-.link-title { font-weight: 600; overflow-wrap: anywhere; }
-.item-list { display: grid; gap: 0.6rem; margin-top: 0.6rem; }
-.item-row {
-  display: grid;
-  grid-template-columns: 56px minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 0.75rem;
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 0.5rem;
-}
-.thumb { width: 56px; height: 56px; border-radius: 6px; object-fit: cover; background: var(--soft-bg); display: flex; align-items: center; justify-content: center; color: var(--text-muted); }
-.item-meta { min-width: 0; font-size: 0.85rem; }
-.item-meta strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.error-row { background: var(--danger-bg); color: var(--danger-text); border-radius: 8px; padding: 0.6rem 0.8rem; font-size: 0.85rem; margin-top: 0.6rem; overflow-wrap: anywhere; }
-.note-row { background: var(--warn-bg); color: var(--warn-text); border-radius: 8px; padding: 0.6rem 0.8rem; font-size: 0.85rem; margin-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; justify-content: space-between; }
-
-@media (max-width: 480px) {
-  .item-row { grid-template-columns: 48px minmax(0, 1fr); }
-  .item-row .btn-download { grid-column: 1 / -1; }
-  .thumb { width: 48px; height: 48px; }
-  .batch-header .btn-download { width: 100%; }
-  .platform-btn { font-size: 0.85rem; padding: 0.45rem 0.75rem; }
-}
-
-.legal { font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-top: 1.25rem; }
-footer {
-  text-align: center;
-  padding: 1.5rem max(1rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
-  border-top: 1px solid var(--border-color);
-  background: var(--card-bg);
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-top: 2rem;
-}
-.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -311,7 +31,7 @@ footer {
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Any",
   "inLanguage": "en",
-  "description": "A browser-based tool for processing supported public video links from TikTok, Instagram Reels, Facebook Reels, YouTube Shorts and Pinterest.",
+  "description": "A simple browser-based tool for processing supported public video links from TikTok, Instagram Reels, Facebook Reels, YouTube Shorts and Pinterest.",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
 }
 </script>
@@ -320,103 +40,246 @@ footer {
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {"@type":"Question","name":"Is MediaSaveDownload free to use?","acceptedAnswer":{"@type":"Answer","text":"The website interface is free to access. Successful downloads depend on the availability of the configured service and source platform."}},
-    {"@type":"Question","name":"Can I download photos?","acceptedAnswer":{"@type":"Answer","text":"No. MediaSaveDownload is designed for supported videos only. Photo downloads are not offered."}},
-    {"@type":"Question","name":"Why did a video link fail?","acceptedAnswer":{"@type":"Answer","text":"A link may fail if the post is private, unavailable, unsupported, restricted by the platform, or not supported by the configured provider. Try a public post URL."}},
-    {"@type":"Question","name":"Can I download any video?","acceptedAnswer":{"@type":"Answer","text":"Only download videos you own or have permission to save. Respect copyright, privacy, and the terms of the source platform."}}
+    {"@type":"Question","name":"Is MediaSaveDownload free to use?","acceptedAnswer":{"@type":"Answer","text":"The website is free to access. Successful video processing depends on the source platform and the availability of the configured download provider."}},
+    {"@type":"Question","name":"Which platforms are supported?","acceptedAnswer":{"@type":"Answer","text":"MediaSaveDownload is designed for supported public videos from TikTok, Instagram Reels, Facebook Reels, YouTube Shorts and Pinterest video Pins."}},
+    {"@type":"Question","name":"Why did my video link fail?","acceptedAnswer":{"@type":"Answer","text":"A link can fail when a post is private, unavailable, restricted, unsupported, or not supported by the configured provider. Try a public video post URL."}},
+    {"@type":"Question","name":"Can I download any video?","acceptedAnswer":{"@type":"Answer","text":"Only download videos you own or have permission to save. Respect copyright, privacy and each platform's terms."}},
+    {"@type":"Question","name":"Can I download profile links?","acceptedAnswer":{"@type":"Answer","text":"No. Paste a direct video post URL rather than a profile or account URL."}}
   ]
 }
 </script>
+<style>
+:root{color-scheme:light;--ink:#172033;--muted:#64708a;--line:#e4e8f2;--paper:#fff;--wash:#f5f7fc;--brand:#6657f5;--brand-dark:#5142df;--teal:#15b8a6;--navy:#10152b;--shadow:0 18px 50px rgba(29,40,78,.09);--radius:24px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--wash);color:var(--ink);line-height:1.65;min-height:100vh;min-height:100dvh;overflow-x:hidden}
+button,input,textarea,select{font:inherit}button{cursor:pointer}a{color:inherit}img{max-width:100%}
+:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+.site-header{position:relative;z-index:2;background:rgba(16,21,43,.98);color:#fff;border-bottom:1px solid rgba(255,255,255,.08)}
+.nav-wrap{max-width:1160px;margin:auto;padding:17px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.logo{display:inline-flex;align-items:center;gap:11px;color:#fff;text-decoration:none;font-family:Manrope,sans-serif;font-size:1.12rem;font-weight:800;letter-spacing:-.04em}
+.logo-mark{width:38px;height:38px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,#8c7cff,#5d4af2);box-shadow:0 8px 22px rgba(102,87,245,.3);font-size:1rem}
+.nav-links{display:flex;gap:24px;align-items:center;font-size:.9rem;color:#d8def2}
+.nav-links a{text-decoration:none}.nav-links a:hover{color:#fff}
+.nav-cta{background:#fff;color:var(--navy)!important;padding:9px 15px;border-radius:999px;font-weight:700}
+.container{width:min(1160px,100% - 40px);margin:0 auto}
+.hero{position:relative;isolation:isolate;padding:64px 0 36px;background:radial-gradient(ellipse at 12% 10%,rgba(117,100,255,.22),transparent 35%),radial-gradient(ellipse at 85% 0%,rgba(21,184,166,.13),transparent 30%),var(--navy);color:#fff;overflow:hidden}
+.hero:after{content:"";position:absolute;inset:0;z-index:-1;opacity:.18;background-image:radial-gradient(rgba(255,255,255,.45) .7px,transparent .7px);background-size:18px 18px;mask-image:linear-gradient(to bottom,black,transparent)}
+.hero-inner{max-width:850px;margin:auto;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07);padding:7px 13px;border-radius:999px;color:#d9d5ff;font-size:.82rem;font-weight:700;letter-spacing:.02em}
+.eyebrow i{color:#62e4cf}
+.hero h1{font-family:Manrope,sans-serif;font-size:clamp(2.35rem,6vw,4.55rem);line-height:1.08;letter-spacing:-.065em;margin:22px auto 17px;max-width:850px;font-weight:800;text-wrap:balance}
+.hero h1 .accent{background:linear-gradient(90deg,#a79aff,#69e6d1);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-copy{font-size:clamp(1rem,2vw,1.15rem);color:#c6cde1;max-width:690px;margin:0 auto}
+.platform-pills{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin:25px auto 0}
+.platform-pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);border-radius:999px;padding:8px 12px;color:#f5f6ff;font-size:.84rem;font-weight:600}
+.platform-pill i{font-size:1rem}
+main{padding-bottom:42px}
+.ad-slot{min-height:94px;margin:26px auto;max-width:970px;border:1px dashed #cfd5e5;border-radius:15px;background:rgba(255,255,255,.6);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#8a93a8;text-align:center;padding:12px}
+.ad-label{font-size:.68rem;text-transform:uppercase;letter-spacing:.14em;font-weight:700}
+.ad-placeholder{font-size:.82rem}
+.tool-card{position:relative;max-width:920px;margin:0 auto;background:var(--paper);border:1px solid var(--line);border-radius:28px;padding:clamp(22px,4vw,42px);box-shadow:var(--shadow)}
+.tool-heading{text-align:center;margin-bottom:27px}
+.tool-heading .mini-icon{width:52px;height:52px;border-radius:17px;background:#eeecff;color:var(--brand);display:grid;place-items:center;margin:0 auto 14px;font-size:1.25rem}
+.tool-heading h2{font-family:Manrope,sans-serif;font-size:clamp(1.45rem,3vw,2rem);line-height:1.25;letter-spacing:-.04em;margin-bottom:8px}
+.tool-heading p{color:var(--muted);max-width:620px;margin:auto}
+#configBanner{margin:0 0 18px;border-radius:12px;padding:12px 15px;font-size:.9rem;line-height:1.5}
+.banner.warn{background:#fff7e4;border:1px solid #f2dfab;color:#855700}
+.platform-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:24px 0}
+.platform-btn{min-height:80px;border:1px solid var(--line);border-radius:16px;background:#fff;color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:12px 7px;font-size:.8rem;font-weight:700;transition:transform .18s,border-color .18s,background .18s}
+.platform-btn i{font-size:1.35rem}
+.platform-btn:hover{transform:translateY(-2px);border-color:#b5adff}
+.platform-btn.active{background:#f0efff;border-color:var(--brand);color:var(--brand);box-shadow:inset 0 0 0 1px var(--brand)}
+.field-label{display:block;font-weight:700;font-size:.94rem;margin-bottom:8px}
+.input-field{display:block;width:100%;min-height:142px;resize:vertical;padding:16px;border:1px solid #d9deeb;border-radius:15px;background:#fbfcff;color:var(--ink);font-size:1rem;line-height:1.55;transition:border-color .15s,box-shadow .15s}
+.input-field::placeholder{color:#9aa3b6}.input-field:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 4px rgba(102,87,245,.12)}
+.input-hint{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.82rem;margin-top:9px}
+.options-row{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap;margin:24px 0}
+.check{display:flex;align-items:flex-start;gap:10px;font-size:.9rem;color:#3b465c}
+.check input{width:18px;height:18px;margin-top:4px;accent-color:var(--brand)}
+.select-wrap{display:flex;align-items:center;gap:10px;color:#3b465c;font-size:.88rem;font-weight:600}
+.select-wrap select{border:1px solid var(--line);border-radius:10px;background:#fff;padding:9px 30px 9px 11px;min-height:42px}
+.btn-submit{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;min-height:56px;border:0;border-radius:15px;background:linear-gradient(100deg,var(--brand),#8373ff);color:#fff;font-weight:800;font-size:1rem;box-shadow:0 10px 24px rgba(102,87,245,.24);transition:transform .15s,filter .15s}
+.btn-submit:hover{filter:brightness(1.04);transform:translateY(-1px)}.btn-submit:disabled{opacity:.65;cursor:wait;transform:none}
+.legal{color:var(--muted);font-size:.82rem;text-align:center;margin:18px auto 0;max-width:690px}
+.status-container{margin-top:28px;padding-top:23px;border-top:1px solid var(--line)}
+.status-container h2{font-family:Manrope,sans-serif;font-size:1.15rem;text-align:center}
+.progress-bar{height:8px;border-radius:999px;background:#eceef7;overflow:hidden;margin:15px 0 8px}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--brand),var(--teal));border-radius:inherit;transition:width .2s}
+.status-sub{text-align:center;color:var(--muted);font-size:.86rem;overflow-wrap:anywhere}
+.kloter-bar{display:grid;gap:12px;margin-top:16px}.batch-card{border:1px solid var(--line);border-radius:15px;padding:15px;margin-top:12px;background:#fff}
+.batch-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.link-title{font-weight:700;overflow-wrap:anywhere}.muted{font-size:.84rem;color:var(--muted)}.error-row{margin-top:8px;color:#b42318;font-size:.9rem}.note-row{padding:9px 11px;background:#fff6df;color:#875a00;border-radius:9px;font-size:.85rem;margin-bottom:10px}
+.item-list{display:grid;gap:10px}.item-row{display:flex;align-items:center;gap:12px;min-width:0;padding:10px;border:1px solid #edf0f7;border-radius:12px}
+.thumb{width:62px;height:62px;flex:0 0 62px;object-fit:cover;border-radius:10px;background:#f0f2f9;display:grid;place-items:center;color:#7c83a0}
+.item-meta{display:flex;flex-direction:column;gap:3px;min-width:0;flex:1;font-size:.86rem;overflow-wrap:anywhere}.badge{display:inline-flex;align-self:flex-start;padding:3px 8px;border-radius:999px;background:#e6faf4;color:#087d69;font-size:.73rem;font-weight:700}.badge.warn{background:#fff0d2;color:#8b5900}
+.btn-download{display:inline-flex;align-items:center;justify-content:center;gap:7px;border:1px solid #d9d4ff;border-radius:10px;background:#f3f1ff;color:#5142df;text-decoration:none;font-size:.85rem;font-weight:800;padding:10px 13px;white-space:nowrap}.btn-download:hover{background:#e8e4ff}
+.content-section{max-width:920px;margin:26px auto 0;background:#fff;border:1px solid var(--line);border-radius:24px;padding:clamp(22px,4vw,38px)}
+.section-kicker{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:var(--brand);margin-bottom:8px}
+.content-section h2{font-family:Manrope,sans-serif;font-size:clamp(1.35rem,3vw,1.8rem);line-height:1.25;letter-spacing:-.035em;margin-bottom:12px}
+.content-section h3{font-family:Manrope,sans-serif;font-size:1.02rem;line-height:1.35;margin:20px 0 6px}
+.content-section p{color:#566178;margin:8px 0}.steps-grid,.platform-info-grid,.benefit-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin-top:20px}
+.info-card{border:1px solid var(--line);border-radius:16px;padding:17px;background:#fcfcff}
+.info-card .step-num{width:32px;height:32px;display:grid;place-items:center;border-radius:10px;background:#efedff;color:var(--brand);font-weight:800;margin-bottom:12px}
+.info-card h3{margin:0 0 7px}.info-card p{font-size:.9rem;margin:0}
+.platform-info-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.platform-info{display:flex;gap:13px;align-items:flex-start;border-bottom:1px solid #eef0f6;padding:14px 0}.platform-info:last-child{border-bottom:0}
+.platform-info .platform-symbol{width:40px;height:40px;flex:0 0 40px;border-radius:12px;background:#f0efff;color:var(--brand);display:grid;place-items:center;font-size:1.1rem}
+.platform-info h3{margin:0 0 4px}.platform-info p{font-size:.9rem;margin:0}
+.faq-list details{border-top:1px solid var(--line);padding:16px 0}.faq-list details:first-child{margin-top:12px}.faq-list summary{font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:14px}.faq-list summary::-webkit-details-marker{display:none}.faq-list summary:after{content:"+";color:var(--brand);font-size:1.2rem;font-weight:700}.faq-list details[open] summary:after{content:"−"}.faq-list details p{padding-right:25px;margin-top:8px}
+.notice{padding:15px 17px;border-radius:14px;background:#f1f0ff;border:1px solid #e2deff;color:#40378b;margin-top:16px;font-size:.9rem}
+.site-footer{margin-top:48px;background:var(--navy);color:#d6dced;padding:34px 20px calc(28px + env(safe-area-inset-bottom))}
+.footer-inner{max-width:1160px;margin:auto;display:flex;align-items:flex-start;justify-content:space-between;gap:26px;flex-wrap:wrap}
+.footer-brand{max-width:390px}.footer-brand .logo{margin-bottom:12px}.footer-brand p{font-size:.88rem;color:#aeb8d0}
+.footer-links{display:flex;gap:12px 20px;flex-wrap:wrap;font-size:.88rem}.footer-links a{color:#d6dced;text-decoration:none}.footer-links a:hover{color:#fff;text-decoration:underline}
+.copyright{max-width:1160px;margin:24px auto 0;padding-top:17px;border-top:1px solid rgba(255,255,255,.12);font-size:.8rem;color:#98a3bd}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media(max-width:760px){.nav-wrap{padding:14px 18px}.nav-links{gap:14px}.nav-links a:not(.nav-cta){display:none}.hero{padding:48px 0 30px}.container{width:min(100% - 28px,1160px)}.platform-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.platform-btn{min-height:74px}.steps-grid,.benefit-grid{grid-template-columns:1fr}.platform-info-grid{grid-template-columns:1fr}.ad-slot{margin:18px auto;min-height:76px}.content-section,.tool-card{border-radius:20px}}
+@media(max-width:430px){.container{width:calc(100% - 20px)}.logo{font-size:1rem}.logo-mark{width:34px;height:34px}.nav-cta{padding:8px 11px;font-size:.82rem}.hero h1{font-size:2.25rem}.hero-copy{font-size:.96rem}.platform-pills{gap:7px}.platform-pill{font-size:.76rem;padding:7px 9px}.tool-card,.content-section{padding:19px}.platform-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.platform-btn:last-child{grid-column:span 2}.input-hint{font-size:.78rem}.options-row{align-items:flex-start}.select-wrap{width:100%;justify-content:space-between}.item-row{flex-wrap:wrap}.item-meta{min-width:calc(100% - 80px)}.item-row .btn-download{width:100%}.batch-header{align-items:flex-start;flex-direction:column}.footer-links{gap:12px 15px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
+</style>
 </head>
 <body>
-
-<header>
-  <a href="/" class="logo"><i class="fa-solid fa-cloud-arrow-down" aria-hidden="true"></i> MediaSaveDownload</a>
+<header class="site-header">
+  <div class="nav-wrap">
+    <a href="/" class="logo" aria-label="MediaSaveDownload home"><span class="logo-mark"><i class="fa-solid fa-arrow-down-to-line" aria-hidden="true"></i></span>MediaSaveDownload</a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#how-it-works">How it works</a>
+      <a href="#supported-platforms">Platforms</a>
+      <a href="#faq">FAQ</a>
+      <a href="#video-tool" class="nav-cta">Start downloading <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+    </nav>
+  </div>
 </header>
 
-<main class="container">
-  
-
-  <section class="tool-card">
-    <div class="tool-title">
-      <h1>Free Social Media Video Downloader</h1>
-      <p>Download supported videos from TikTok, Instagram Reels, Facebook Reels, YouTube Shorts and Pinterest. Paste up to 25 post links to process them in batches.</p>
+<section class="hero">
+  <div class="container hero-inner">
+    <span class="eyebrow"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> Simple. Fast. Video-only.</span>
+    <h1>Your favorite videos,<br><span class="accent">ready to save.</span></h1>
+    <p class="hero-copy">A simple way to process supported public videos from your favorite social platforms. Paste a video link, find available files, and save them one at a time or in a ZIP batch.</p>
+    <div class="platform-pills" aria-label="Supported platforms">
+      <span class="platform-pill"><i class="fa-brands fa-tiktok" aria-hidden="true"></i> TikTok</span>
+      <span class="platform-pill"><i class="fa-brands fa-instagram" aria-hidden="true"></i> Instagram Reels</span>
+      <span class="platform-pill"><i class="fa-brands fa-facebook" aria-hidden="true"></i> Facebook Reels</span>
+      <span class="platform-pill"><i class="fa-brands fa-youtube" aria-hidden="true"></i> YouTube Shorts</span>
+      <span class="platform-pill"><i class="fa-brands fa-pinterest-p" aria-hidden="true"></i> Pinterest</span>
     </div>
+  </div>
+</section>
 
-    <div id="configBanner" class="banner warn" role="status" hidden></div>
+<main>
+  <div class="container">
+    <!-- Reserved ad placement. Add a compliant ad network tag only after account approval. Keep ads visually separate from navigation and download controls. -->
+    <aside class="ad-slot" aria-label="Advertisement placement">
+      <span class="ad-label">Advertisement</span>
+      <span class="ad-placeholder">Responsive banner placement</span>
+    </aside>
 
-    
+    <section class="tool-card" id="video-tool" aria-labelledby="tool-title">
+      <div class="tool-heading">
+        <span class="mini-icon"><i class="fa-solid fa-cloud-arrow-down" aria-hidden="true"></i></span>
+        <h2 id="tool-title">Download social videos</h2>
+        <p>Choose a platform, paste one or more direct video links, and process up to 25 links at once.</p>
+      </div>
+      <div id="configBanner" class="banner warn" role="status" hidden></div>
+      <div class="platform-grid" id="platformGrid" role="group" aria-label="Choose a video platform"></div>
+      <label class="field-label" for="profileUrl">Video URLs <span style="font-weight:500;color:#64708a">(one link per line)</span></label>
+      <textarea id="profileUrl" class="input-field" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off" inputmode="url" aria-describedby="linkHelp" placeholder="https://www.tiktok.com/@username/video/1234567890"></textarea>
+      <div class="input-hint" id="linkHelp">
+        <span id="linkCount" aria-live="polite">0 links</span>
+        <span>Use public video post links, not profile URLs.</span>
+      </div>
+      <div class="options-row">
+        <label class="check" for="noWatermark">
+          <input type="checkbox" id="noWatermark" checked>
+          <span><b>Prefer watermark-free video</b><br><span style="color:#64708a;font-size:.82rem">When a clean version is available</span></span>
+        </label>
+        <label class="select-wrap" for="batchSize">
+          <span>Videos per ZIP batch</span>
+          <select id="batchSize" aria-label="Videos per ZIP batch">
+            <option value="10">10</option><option value="15">15</option><option value="20" selected>20</option><option value="25">25</option>
+          </select>
+        </label>
+      </div>
+      <button type="button" class="btn-submit" id="btnSubmit"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> <span id="btnSubmitText">Find Videos</span></button>
+      <div id="statusContainer" class="status-container" hidden>
+        <h2 id="statusText" aria-live="polite">Processing…</h2>
+        <div class="progress-bar" role="progressbar" aria-label="Video processing progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar"><div id="progressFill" class="progress-fill"></div></div>
+        <p id="statusSub" class="status-sub"></p>
+        <div id="kloterBar" class="kloter-bar"></div>
+        <div id="batchResults"></div>
+      </div>
+      <p class="legal">Only save videos you own or have permission to download. Copyright remains with the original creator, and each platform’s terms apply.</p>
+    </section>
 
-    <div class="platform-grid" id="platformGrid" role="group" aria-label="Platform"></div>
+    <!-- Second reserved ad placement. Keep clear spacing from the main action and results. -->
+    <aside class="ad-slot" aria-label="Advertisement placement">
+      <span class="ad-label">Advertisement</span>
+      <span class="ad-placeholder">Responsive in-content placement</span>
+    </aside>
 
-    <label class="field-label" for="profileUrl">Video post URLs (one link per line)</label>
-    <textarea id="profileUrl" class="input-field" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off" inputmode="url" placeholder="https://www.tiktok.com/@username/video/1234567890"></textarea>
-    <div class="input-hint">
-      <span id="linkCount">0 link</span>
-      <span>Post links only; profile and account URLs are not supported.</span>
-    </div>
+    <section class="content-section" id="how-it-works">
+      <div class="section-kicker">Getting started</div>
+      <h2>How to download a social media video</h2>
+      <p>MediaSaveDownload is built for supported public video posts. You do not need to paste an entire profile: use the direct link to the video you want to save.</p>
+      <div class="steps-grid">
+        <article class="info-card"><span class="step-num">01</span><h3>Copy a video link</h3><p>Open a public TikTok, Reel, Short, or video Pin and copy its post URL.</p></article>
+        <article class="info-card"><span class="step-num">02</span><h3>Paste and process</h3><p>Choose the matching platform, paste the URL, then select <strong>Find Videos</strong>.</p></article>
+        <article class="info-card"><span class="step-num">03</span><h3>Save your video</h3><p>Download an available video individually or group multiple results into ZIP batches.</p></article>
+      </div>
+      <div class="notice"><strong>Good to know:</strong> Results depend on the source post being public, platform restrictions, and the availability of the configured video provider. MediaSaveDownload is an independent tool and is not affiliated with the platforms listed here.</div>
+    </section>
 
-    <div class="options-row">
-      <label class="check" for="noWatermark">
-        <input type="checkbox" id="noWatermark" checked>
-        <span><b>Prefer watermark-free video</b> (when available)</span>
-      </label>
-      <label class="select-wrap" for="batchSize">
-        <span>Videos per ZIP batch</span>
-        <select id="batchSize">
-          <option value="10">10</option>
-          <option value="15">15</option>
-          <option value="20" selected>20</option>
-          <option value="25">25</option>
-        </select>
-      </label>
-    </div>
+    <section class="content-section" id="supported-platforms">
+      <div class="section-kicker">Supported links</div>
+      <h2>One tool for five video platforms</h2>
+      <p>Support is focused on video posts—not photos, profile pages, or private content.</p>
+      <div class="platform-info-grid">
+        <article class="platform-info"><span class="platform-symbol"><i class="fa-brands fa-tiktok" aria-hidden="true"></i></span><div><h3>TikTok Video Downloader</h3><p>Process supported public TikTok video links. Availability can vary by post and provider.</p></div></article>
+        <article class="platform-info"><span class="platform-symbol"><i class="fa-brands fa-instagram" aria-hidden="true"></i></span><div><h3>Instagram Reels Downloader</h3><p>Use a direct public Instagram Reel URL. Private or restricted posts are not supported.</p></div></article>
+        <article class="platform-info"><span class="platform-symbol"><i class="fa-brands fa-facebook" aria-hidden="true"></i></span><div><h3>Facebook Reels Downloader</h3><p>Process supported public Facebook Reel links. Some regional or restricted links may fail.</p></div></article>
+        <article class="platform-info"><span class="platform-symbol"><i class="fa-brands fa-youtube" aria-hidden="true"></i></span><div><h3>YouTube Shorts Downloader</h3><p>Paste a supported Shorts URL. Processing depends on the configured provider and applicable restrictions.</p></div></article>
+        <article class="platform-info"><span class="platform-symbol"><i class="fa-brands fa-pinterest-p" aria-hidden="true"></i></span><div><h3>Pinterest Video Downloader</h3><p>Use a direct Pin URL that contains a supported video, not a static image Pin.</p></div></article>
+      </div>
+    </section>
 
-    <button type="button" class="btn-submit" id="btnSubmit"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> <span id="btnSubmitText">Find Videos</span></button>
+    <section class="content-section" id="why-use">
+      <div class="section-kicker">Designed for simplicity</div>
+      <h2>A clean, practical video-saving workflow</h2>
+      <div class="benefit-grid">
+        <article class="info-card"><h3><i class="fa-solid fa-layer-group" aria-hidden="true" style="color:#6657f5;margin-right:7px"></i>Batch processing</h3><p>Process multiple post links in one session and organize available files into ZIP batches.</p></article>
+        <article class="info-card"><h3><i class="fa-solid fa-mobile-screen-button" aria-hidden="true" style="color:#6657f5;margin-right:7px"></i>Mobile friendly</h3><p>A responsive layout designed to work on phones, tablets, laptops, and desktop browsers.</p></article>
+        <article class="info-card"><h3><i class="fa-solid fa-shield-halved" aria-hidden="true" style="color:#6657f5;margin-right:7px"></i>Use responsibly</h3><p>Save only content you own or have permission to download, and respect creator rights.</p></article>
+      </div>
+    </section>
 
-    <div id="statusContainer" class="status-container" hidden>
-      <h2 id="statusText" aria-live="polite">Processing…</h2>
-      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar"><div id="progressFill" class="progress-fill"></div></div>
-      <p id="statusSub" class="status-sub"></p>
-      <div id="kloterBar" class="kloter-bar"></div>
-      <div id="batchResults"></div>
-    </div>
-
-    <p class="legal">Only download content you own or have permission to save. Copyright remains with the original creator, and each platform’s terms apply.</p>
-  </section>
-
-  <section class="tool-card" style="margin-top:1.25rem" aria-labelledby="how-to-use">
-    <h2 id="how-to-use">How to Download Social Media Videos</h2>
-    <p>MediaSaveDownload helps you process supported public video links from TikTok, Instagram Reels, Facebook Reels, YouTube Shorts and Pinterest. Paste post URLs above, process the links, then download available videos individually or in a ZIP batch. Availability depends on the source platform and the configured download provider.</p>
-    <ol style="margin:0.75rem 0 0 1.25rem;display:grid;gap:.5rem">
-      <li>Copy the URL of a specific video post. Profile links are not supported.</li>
-      <li>Paste one or more URLs into the input box, one per line.</li>
-      <li>Select <strong>Find Videos</strong> and wait for each link to be processed.</li>
-      <li>Download an individual video or use a ZIP batch for multiple results.</li>
-    </ol>
-    <h2 style="margin-top:1.5rem" id="supported-platforms">Supported Video Platforms</h2>
-    <p><strong>TikTok video downloader:</strong> process supported TikTok post URLs.</p>
-    <p><strong>Instagram Reels downloader:</strong> process supported public Reels links.</p>
-    <p><strong>Facebook Reels downloader:</strong> process supported public Facebook Reel links.</p>
-    <p><strong>YouTube Shorts downloader:</strong> process supported Shorts URLs.</p>
-    <p><strong>Pinterest video downloader:</strong> process supported video Pins.</p>
-    <h2 style="margin-top:1.5rem" id="faq">Frequently Asked Questions</h2>
-    <h3 style="margin-top:.75rem">Is MediaSaveDownload free to use?</h3>
-    <p>The website interface is free to access. Successful downloads depend on the availability of the configured service and source platform.</p>
-    <h3 style="margin-top:.75rem">Can I download photos?</h3>
-    <p>No. MediaSaveDownload is designed for supported videos only. Photo downloads are not offered.</p>
-    <h3 style="margin-top:.75rem">Why did a video link fail?</h3>
-    <p>A link may fail if the post is private, unavailable, unsupported, restricted by the platform, or not supported by the configured provider. Try a public post URL.</p>
-    <h3 style="margin-top:.75rem">Can I download any video?</h3>
-    <p>Only download videos you own or have permission to save. Respect copyright, privacy, and the terms of the source platform.</p>
-  </section>
-  </section>
-
-  
+    <section class="content-section faq-list" id="faq">
+      <div class="section-kicker">Help center</div>
+      <h2>Frequently asked questions</h2>
+      <details><summary>Is MediaSaveDownload free to use?</summary><p>The website is free to access. Successful video processing depends on the source platform and the availability of the configured download provider.</p></details>
+      <details><summary>Which platforms are supported?</summary><p>The tool is designed for supported public videos from TikTok, Instagram Reels, Facebook Reels, YouTube Shorts, and Pinterest video Pins.</p></details>
+      <details><summary>Why did my video link fail?</summary><p>A link can fail if a post is private, unavailable, restricted, unsupported, or not supported by the configured provider. Try a public video post URL and check that it belongs to one of the supported platforms.</p></details>
+      <details><summary>Can I download profile links or photos?</summary><p>No. Paste a direct video post URL. Profile links and photo downloads are not supported.</p></details>
+      <details><summary>Can I download any video I find?</summary><p>Only download videos you own or have permission to save. Respect copyright, privacy, and the terms of the source platform. Do not use this tool to bypass access controls or download private content.</p></details>
+      <details><summary>Does MediaSaveDownload belong to TikTok, Instagram, Facebook, YouTube, or Pinterest?</summary><p>No. MediaSaveDownload is an independent third-party tool and is not affiliated with, endorsed by, or sponsored by those platforms.</p></details>
+    </section>
+  </div>
 </main>
 
-<footer>
-  <p>&copy; 2026 MediaSaveDownload. A simple social media video downloader.</p>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="/" class="logo"><span class="logo-mark"><i class="fa-solid fa-arrow-down-to-line" aria-hidden="true"></i></span>MediaSaveDownload</a>
+      <p>A simple video link tool for supported public posts. Built for clarity, mobile usability, and responsible use.</p>
+    </div>
+    <nav class="footer-links" aria-label="Legal and information">
+      <a href="/about.html">About</a>
+      <a href="/privacy-policy.html">Privacy Policy</a>
+      <a href="/terms.html">Terms of Use</a>
+      <a href="/copyright.html">Copyright Policy</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </div>
+  <div class="copyright">© 2026 MediaSaveDownload. All rights reserved. All third-party names and marks belong to their respective owners.</div>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -531,12 +394,12 @@ footer {
       if (d && d.configured === false) {
         state.configured = false;
         els.banner.hidden = false;
-        els.banner.textContent = 'The download API is not configured yet. The site owner must set RAPIDAPI_KEY and RAPIDAPI_HOST in Cloudflare Workers.';
+        els.banner.textContent = 'The video service is not available yet. Please try again later.';
       }
     }).catch(function () {
       state.configured = false;
       els.banner.hidden = false;
-      els.banner.textContent = 'The download service could not be reached. Please try again later.';
+      els.banner.textContent = 'The video service could not be reached. Please try again later.';
     });
   }
 
@@ -549,7 +412,7 @@ footer {
       var data = null;
       try { data = await r.json(); } catch (e) { /* bukan JSON */ }
       if (!r.ok || !data) {
-        throw new Error((data && data.message) || 'Server tidak merespons dengan benar (kode ' + r.status + ').');
+        throw new Error((data && data.message) || 'The server returned an unexpected response (status ' + r.status + ').');
       }
       return data;
     } catch (e) {
@@ -597,7 +460,7 @@ footer {
     else showStatus('Done: ' + ok + ' link' + (ok === 1 ? '' : 's') + ' processed' + (failed ? ', ' + failed + ' failed' : ''), 'Download individual videos or ZIP batches.' + extra, 100, false);
     state.busy = false;
     els.submit.disabled = false;
-    els.submitText.textContent = 'Proses Link';
+    els.submitText.textContent = 'Process Links';
   }
 
   // ---------- tampilan hasil ----------
@@ -607,7 +470,7 @@ footer {
     if (els.noWm.checked && list.length) {
       var clean = list.filter(function (it) { return !it.watermark; });
       if (clean.length) list = clean;
-      else note = 'Hanya versi berwatermark yang tersedia dari sumbernya.';
+      else note = 'Only a watermarked version is available from the source.';
     }
     return { list: list, note: note };
   }
@@ -628,7 +491,7 @@ footer {
       var vis = visibleItems(d);
       var head = el('div', { 'class': 'batch-header' }, [
         el('div', {}, [
-          el('div', { 'class': 'link-title', text: d.title || 'Media dari ' + d.platform }),
+          el('div', { 'class': 'link-title', text: d.title || 'Video from ' + d.platform }),
           el('div', { 'class': 'muted', text: d.platform + (d.author ? ' · ' + d.author : '') })
         ])
       ]);
@@ -711,7 +574,7 @@ footer {
           var c = chunk[next++];
           try {
             var r = await fetch(c.it.file);
-            if (!r.ok) throw new Error('gagal');
+            if (!r.ok) throw new Error('failed');
             var blob = await r.blob();
             var name = c.it.name;
             if (used[name]) name = (used[name]++) + '_' + name; else used[name] = 1;
