@@ -35,10 +35,10 @@ export default {
   },
 };
 
-function json(body, status = 200) {
+function json(body, status = 200, extraHeaders = {}) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' },
+    headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store', ...extraHeaders },
   });
 }
 
@@ -159,7 +159,12 @@ async function handleDownload(url, env) {
       message = 'This link is not supported by SaveAPI.';
       status = 400;
     }
-    return json({ error: (apiErrorCode || 'upstream_error').toLowerCase(), message: String(message).slice(0, 300) }, status);
+    const retryAfter = res.headers.get('Retry-After');
+    return json(
+      { error: (apiErrorCode || 'upstream_error').toLowerCase(), message: String(message).slice(0, 300) },
+      status,
+      status === 429 && retryAfter ? { 'Retry-After': retryAfter } : {},
+    );
   }
 
   const result = normalize(data);
@@ -211,7 +216,7 @@ async function handleYouTubeInfo(parsed, env) {
   if (!data || typeof data !== 'object') {
     return json({ error: 'bad_response', message: 'SaveAPI returned an unreadable response.' }, 502);
   }
-  if (!res.ok || data.success === false) return saveApiError(data, res.status);
+  if (!res.ok || data.success === false) return saveApiError(data, res.status, res.headers.get('Retry-After'));
 
   const root = data.data && typeof data.data === 'object' ? data.data : data;
   const formats = Array.isArray(root.formats) ? root.formats : (Array.isArray(data.formats) ? data.formats : []);
@@ -255,7 +260,7 @@ async function handleYouTubeInfo(parsed, env) {
   return json({ platform: 'YouTube', title, author, items });
 }
 
-function saveApiError(data, upstreamStatus) {
+function saveApiError(data, upstreamStatus, retryAfter = null) {
   const code = data && data.error && data.error.code ? String(data.error.code) : '';
   let message = (data && data.error && data.error.message) || (data && data.message) || 'SaveAPI could not process this link.';
   let status = upstreamStatus >= 500 ? 502 : (upstreamStatus || 422);
@@ -283,7 +288,11 @@ function saveApiError(data, upstreamStatus) {
     message = 'Your SaveAPI plan does not allow YouTube downloads.';
     status = 403;
   }
-  return json({ error: (code || 'upstream_error').toLowerCase(), message: String(message).slice(0, 300) }, status);
+  return json(
+    { error: (code || 'upstream_error').toLowerCase(), message: String(message).slice(0, 300) },
+    status,
+    status === 429 && retryAfter ? { 'Retry-After': retryAfter } : {},
+  );
 }
 
 async function handleFile(url, env) {
@@ -330,7 +339,7 @@ async function handleFile(url, env) {
       try { made = await createRes.json(); } catch {
         return json({ error: 'bad_response', message: 'SaveAPI returned an unreadable YouTube download response.' }, 502);
       }
-      if (!createRes.ok || !made || made.success === false) return saveApiError(made || {}, createRes.status);
+      if (!createRes.ok || !made || made.success === false) return saveApiError(made || {}, createRes.status, createRes.headers.get('Retry-After'));
       const madeRoot = made.data && typeof made.data === 'object' ? made.data : made;
       const streamUrl = madeRoot.url || madeRoot.download_url || madeRoot.downloadUrl;
       if (typeof streamUrl !== 'string') {
