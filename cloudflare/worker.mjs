@@ -15,9 +15,7 @@ const PLATFORM_HOSTS = {
   Instagram: ['instagram.com', 'instagr.am'],
   Facebook: ['facebook.com', 'fb.watch', 'fb.com'],
   YouTube: ['youtube.com', 'youtu.be'],
-  Twitter: ['twitter.com', 'x.com'],
   Pinterest: ['pinterest.com', 'pin.it'],
-  Threads: ['threads.net', 'threads.com'],
 };
 
 const IMG_EXT = /\.(jpe?g|png|webp|gif|heic|avif)(\?|#|$)/i;
@@ -35,7 +33,7 @@ export default {
     if (url.pathname === '/api/file') return await handleFile(url, env);
     if (env.ASSETS) return env.ASSETS.fetch(request);
   } catch (err) {
-    return json({ error: 'server_error', message: 'Terjadi kesalahan di server. Coba lagi sebentar.' }, 500);
+    return json({ error: 'server_error', message: 'Something went wrong on the server. Please try again shortly.' }, 500);
   }
   return json({ error: 'not_found' }, 404);
   },
@@ -60,7 +58,25 @@ function detectPlatform(hostname) {
   return null;
 }
 
-// Link profil/akun (bukan satu postingan). API unduh biasa hanya menerima link postingan.
+function isSupportedVideoUrl(platform, u) {
+  const path = u.pathname.toLowerCase();
+  switch (platform) {
+    case 'TikTok':
+      return /\/video\/\d+/.test(path) || /^(vm|vt)\.tiktok\.com$/.test(u.hostname.toLowerCase());
+    case 'Instagram':
+      return /^\/(reel|reels)\//.test(path);
+    case 'Facebook':
+      return /^\/reel\//.test(path) || /^\/share\/r\//.test(path) || u.hostname.toLowerCase() === 'fb.watch';
+    case 'YouTube':
+      return /^\/shorts\//.test(path) || u.hostname.toLowerCase() === 'youtu.be';
+    case 'Pinterest':
+      return /^\/pin\/\d+/.test(path) || u.hostname.toLowerCase() === 'pin.it';
+    default:
+      return false;
+  }
+}
+
+// Accept only direct supported video post URLs; photo links and profile pages are not supported.
 function isProfileLink(platform, u) {
   const segs = u.pathname.split('/').filter(Boolean);
   const first = segs[0] || '';
@@ -84,7 +100,7 @@ async function handleDownload(url, env) {
   if (!env.RAPIDAPI_KEY || !env.RAPIDAPI_HOST) {
     return json({
       error: 'not_configured',
-      message: 'Server belum dihubungkan ke API. Pemilik situs perlu mengisi RAPIDAPI_KEY dan RAPIDAPI_HOST.',
+      message: 'The video service is not available yet. Please try again later.',
     }, 503);
   }
   const target = (url.searchParams.get('url') || '').trim();
@@ -93,17 +109,14 @@ async function handleDownload(url, env) {
     parsed = new URL(target);
     if (!/^https?:$/.test(parsed.protocol) || target.length > 2000) throw new Error('bad');
   } catch {
-    return json({ error: 'bad_url', message: 'Link tidak valid. Tempel link lengkap yang diawali https://' }, 400);
+    return json({ error: 'bad_url', message: 'Invalid link. Paste a complete URL beginning with https://' }, 400);
   }
   const platform = detectPlatform(parsed.hostname);
   if (!platform) {
-    return json({ error: 'unsupported', message: 'Platform belum didukung. Gunakan TikTok, Instagram, Facebook, YouTube Shorts, Twitter/X, Pinterest, atau Threads.' }, 400);
+    return json({ error: 'unsupported', message: 'Unsupported platform. Use TikTok, Instagram Reels, Facebook Reels, YouTube Shorts, or Pinterest video links.' }, 400);
   }
   if (isProfileLink(platform, parsed)) {
-    return json({
-      error: 'profile_not_supported',
-      message: 'Ini link profil. Tempel link satu postingan (video atau foto) langsung.',
-    }, 422);
+    return json({ error: 'profile_not_supported', message: 'This looks like a profile link. Paste a direct video post URL instead.' }, 422);
   }
 
   const api = new URL(`https://${env.RAPIDAPI_HOST}${env.RAPIDAPI_PATH || '/download'}`);
@@ -141,8 +154,9 @@ async function handleDownload(url, env) {
   }
 
   const result = normalize(data);
+  result.items = result.items.filter((item) => item.type === 'video');
   if (!result.items.length) {
-    return json({ error: 'no_media', message: 'Tidak ada video atau foto yang ditemukan. Pastikan postingan bersifat publik.' }, 422);
+    return json({ error: 'no_video', message: 'No supported video was found. Make sure the post is public and contains a supported video.' }, 422);
   }
 
   const secret = env.RAPIDAPI_KEY;
