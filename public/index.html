@@ -339,30 +339,31 @@ main{padding-bottom:42px}
   function updateCount() {
     var n = parseLinks(els.input.value).length;
     els.count.textContent = n + ' link' + (n === 1 ? '' : 's') + (n > MAX_LINKS ? ' (' + MAX_LINKS + ' maximum)' : '');
-    var first = parseLinks(els.input.value)[0];
-    if (first) {
-      try {
-        var p = hostPlatform(new URL(first).hostname);
-        if (p && p !== state.platform) setPlatform(p);
-      } catch (e) { /* belum link valid */ }
-    }
   }
 
   // ---------- mode & platform ----------
   function setPlatform(name) {
     state.platform = name;
+    var allButton = $('plat-All');
+    if (allButton) {
+      allButton.classList.toggle('active', name === 'All');
+      allButton.setAttribute('aria-pressed', String(name === 'All'));
+    }
     PLATFORMS.forEach(function (p) {
       var b = $('plat-' + p.name);
       b.classList.toggle('active', p.name === name);
       b.setAttribute('aria-pressed', String(p.name === name));
       if (p.name === name) els.input.placeholder = p.example;
     });
+    if (name === 'All') els.input.placeholder = 'Paste video links from any supported platform, one per line';
   }
+  els.grid.appendChild(el('button', { type: 'button', id: 'plat-All', 'class': 'platform-btn', 'aria-pressed': 'false', on: { click: function () { setPlatform('All'); } } },
+    [icon('fa-solid fa-layer-group'), 'All platforms']));
   PLATFORMS.forEach(function (p) {
     els.grid.appendChild(el('button', { type: 'button', id: 'plat-' + p.name, 'class': 'platform-btn', 'aria-pressed': 'false', on: { click: function () { setPlatform(p.name); } } },
       [icon(p.icon), p.label]));
   });
-  setPlatform('TikTok');
+  setPlatform('All');
   els.noWm.addEventListener('change', renderResults);
   els.size.addEventListener('change', renderResults);
   els.input.addEventListener('input', updateCount);
@@ -449,7 +450,23 @@ main{padding-bottom:42px}
       if (!valid) {
         entry.error = 'Invalid URL. Use a link that starts with https://.';
       } else {
-        try { entry.data = await fetchOne(link); ok++; } catch (e) { entry.error = e.message; }
+        var detected = null;
+        try { detected = hostPlatform(new URL(link).hostname); } catch (e) { detected = null; }
+        if (!detected) {
+          entry.error = 'Unsupported platform. Use a direct video URL from one of the supported platforms.';
+        } else if (state.platform !== 'All' && detected !== state.platform) {
+          entry.error = 'Platform mismatch: this is a ' + detected + ' link, but ' + state.platform + ' is selected. Select the matching platform or choose All platforms.';
+        } else {
+          try {
+            entry.data = await fetchOne(link);
+            if (entry.data.platform && entry.data.platform !== detected) {
+              entry.error = 'The provider returned a different platform than expected. This link was not added to the download batch.';
+              delete entry.data;
+            } else {
+              ok++;
+            }
+          } catch (e) { entry.error = e.message; }
+        }
       }
       state.results.push(entry);
       renderResults();
@@ -503,7 +520,7 @@ main{padding-bottom:42px}
         if (vis.note) card.appendChild(el('div', { 'class': 'note-row', text: vis.note }));
         var listEl = el('div', { 'class': 'item-list' });
         vis.list.forEach(function (it) {
-          flat.push({ it: it, title: d.title });
+          flat.push({ it: it, title: d.title, source: entry.link });
           listEl.appendChild(itemRow(it));
         });
         card.appendChild(listEl);
@@ -536,19 +553,42 @@ main{padding-bottom:42px}
   function renderKloters(flat) {
     if (!flat.length) return;
     var size = parseInt(els.size.value, 10) || 20;
-    var chunks = [];
-    for (var i = 0; i < flat.length; i += size) chunks.push(flat.slice(i, i + size));
-    chunks.forEach(function (chunk, idx) {
-      var btn = el('button', { type: 'button', 'class': 'btn-download' }, [icon('fa-solid fa-file-zipper'), 'Download Batch ' + (idx + 1) + ' (.ZIP)']);
-      var sub = el('p', { 'class': 'muted', text: chunk.length + ' videos' });
-      btn.addEventListener('click', function () { downloadZip(chunk, idx + 1, btn, sub); });
-      els.kloter.appendChild(el('div', { 'class': 'batch-card', style: 'margin-top:0' }, [
-        el('div', { 'class': 'batch-header', style: 'margin-bottom:0.25rem' }, [
-          el('div', {}, [el('strong', { text: 'Batch ' + (idx + 1) }), el('span', { 'class': 'badge', text: 'Video' })]),
-          btn
-        ]),
-        sub
-      ]));
+    var byQuality = {};
+    flat.forEach(function (entry) {
+      var quality = String(entry.it.quality || 'Standard').trim() || 'Standard';
+      var key = quality.toLowerCase();
+      if (!byQuality[key]) byQuality[key] = { label: quality, items: [], sources: {} };
+      var group = byQuality[key];
+      // A source video can appear only once in a quality group, even if the provider returns duplicate URLs.
+      var sourceKey = String(entry.source || entry.title || '') + '|' + key;
+      if (group.sources[sourceKey]) return;
+      group.sources[sourceKey] = true;
+      group.items.push(entry);
+    });
+    var groups = Object.keys(byQuality).map(function (key) { return byQuality[key]; });
+    groups.sort(function (a, b) {
+      var qa = parseInt(a.label, 10), qb = parseInt(b.label, 10);
+      if (!isNaN(qa) && !isNaN(qb)) return qb - qa;
+      if (!isNaN(qa)) return -1;
+      if (!isNaN(qb)) return 1;
+      return a.label.localeCompare(b.label);
+    });
+    var batchNumber = 0;
+    groups.forEach(function (group) {
+      for (var i = 0; i < group.items.length; i += size) {
+        (function (chunk, qualityLabel, thisBatch) {
+          var btn = el('button', { type: 'button', 'class': 'btn-download' }, [icon('fa-solid fa-file-zipper'), 'Download ' + qualityLabel + ' ZIP ' + thisBatch]);
+          var sub = el('p', { 'class': 'muted', text: chunk.length + ' video' + (chunk.length === 1 ? '' : 's') + ' · one file per source link' });
+          btn.addEventListener('click', function () { downloadZip(chunk, thisBatch, btn, sub, qualityLabel); });
+          els.kloter.appendChild(el('div', { 'class': 'batch-card', style: 'margin-top:0' }, [
+            el('div', { 'class': 'batch-header', style: 'margin-bottom:0.25rem' }, [
+              el('div', {}, [el('strong', { text: qualityLabel + ' · ZIP ' + thisBatch }), el('span', { 'class': 'badge', text: 'Same quality' })]),
+              btn
+            ]),
+            sub
+          ]));
+        })(group.items.slice(i, i + size), group.label, batchNumber);
+      }
     });
   }
 
@@ -561,7 +601,7 @@ main{padding-bottom:42px}
     setTimeout(function () { URL.revokeObjectURL(url); }, 30000);
   }
 
-  async function downloadZip(chunk, number, btn, sub) {
+  async function downloadZip(chunk, number, btn, sub, quality) {
     if (btn.disabled) return;
     btn.disabled = true;
     try {
@@ -588,7 +628,8 @@ main{padding-bottom:42px}
       if (failed === chunk.length) throw new Error('All files failed to download. Process the links again and retry.');
       sub.textContent = 'Creating ZIP…';
       var out = await zip.generateAsync({ type: 'blob', compression: 'STORE' });
-      triggerSave(out, 'MediaSaveDownload_batch_' + number + '.zip');
+      var qualitySlug = String(quality || 'standard').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      triggerSave(out, 'MediaSaveDownload_' + qualitySlug + '_batch_' + number + '.zip');
       sub.textContent = (chunk.length - failed) + ' videos downloaded' + (failed ? ', ' + failed + ' failed' : '') + '.';
     } catch (e) {
       sub.textContent = e.message || 'Could not create the ZIP file.';
