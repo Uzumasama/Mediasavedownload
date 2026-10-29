@@ -405,22 +405,48 @@ main{padding-bottom:42px}
   }
 
   // ---------- proses ----------
+  // SaveAPI Free permits 10 requests/minute. Space requests so a 25-link batch
+  // does not fire all requests in the same rate-limit window.
+  var lastSaveApiRequestAt = 0;
+  var MIN_REQUEST_INTERVAL_MS = 6200;
+  function delay(ms) { return new Promise(function (resolve) { setTimeout(resolve, ms); }); }
+  async function waitForRequestSlot() {
+    var wait = lastSaveApiRequestAt + MIN_REQUEST_INTERVAL_MS - Date.now();
+    if (wait > 0) await delay(wait);
+  }
+
   async function fetchOne(link) {
-    var ctrl = new AbortController();
-    var timer = setTimeout(function () { ctrl.abort(); }, 40000);
-    try {
-      var r = await fetch('/api/download?url=' + encodeURIComponent(link), { signal: ctrl.signal });
-      var data = null;
-      try { data = await r.json(); } catch (e) { /* bukan JSON */ }
-      if (!r.ok || !data) {
-        throw new Error((data && data.message) || 'The server returned an unexpected response (status ' + r.status + ').');
-      }
-      return data;
-    } catch (e) {
-      if (e.name === 'AbortError') throw new Error('The request timed out. Please try again.');
-      if (e instanceof TypeError) throw new Error('Could not connect to the server. Check your internet connection.');
-      throw e;
-    } finally { clearTimeout(timer); }
+    var maxRateLimitRetries = 2;
+    for (var attempt = 0; attempt <= maxRateLimitRetries; attempt++) {
+      var ctrl = new AbortController();
+      var timer = setTimeout(function () { ctrl.abort(); }, 40000);
+      try {
+        await waitForRequestSlot();
+        lastSaveApiRequestAt = Date.now();
+        var r = await fetch('/api/download?url=' + encodeURIComponent(link), { signal: ctrl.signal });
+        var data = null;
+        try { data = await r.json(); } catch (e) { /* bukan JSON */ }
+        var code = data && data.error ? String(data.error).toLowerCase() : '';
+        if (r.status === 429 && code === 'rate_limited' && attempt < maxRateLimitRetries) {
+          var retryAfter = Number(r.headers.get('Retry-After') || 0);
+          var waitMs = Math.max(MIN_REQUEST_INTERVAL_MS, Math.min(60000, retryAfter * 1000 || MIN_REQUEST_INTERVAL_MS));
+          await delay(waitMs);
+          continue;
+        }
+        if (!r.ok || !data) {
+          if (r.status === 429 && code === 'rate_limited') {
+            throw new Error('SaveAPI is still rate-limiting requests after several retries. Wait a minute, then retry the remaining links.');
+          }
+          throw new Error((data && data.message) || 'The server returned an unexpected response (status ' + r.status + ').');
+        }
+        return data;
+      } catch (e) {
+        if (e.name === 'AbortError') throw new Error('The request timed out. Please try again.');
+        if (e instanceof TypeError) throw new Error('Could not connect to the server. Check your internet connection.');
+        throw e;
+      } finally { clearTimeout(timer); }
+    }
+    throw new Error('SaveAPI rate limit reached. Please wait and try again.');
   }
 
   async function startScanning() {
