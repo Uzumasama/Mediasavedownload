@@ -31,21 +31,19 @@ The repository is configured to deploy with Cloudflare Wrangler through GitHub A
 
 The Cloudflare account ID and Worker name are defined in `wrangler.toml`. Do not commit API keys, access tokens, or other secrets.
 
-## Configure the video provider
+## Configure SaveAPI
 
 In Cloudflare Dashboard, open **Workers & Pages → mediasavedownload → Settings → Variables and Secrets** and add:
 
 | Name | Type | Required | Purpose |
 | --- | --- | --- | --- |
-| `RAPIDAPI_KEY` | Secret | Yes | RapidAPI credential |
-| `RAPIDAPI_HOST` | Variable | Yes | Exact host for the selected provider |
-| `RAPIDAPI_PATH` | Variable | No | Provider endpoint path; default is `/download` |
-| `RAPIDAPI_URL_PARAM` | Variable | No | Query parameter for the source video URL; default is `url` |
+| `SAVEAPI_KEY` | Secret | Yes | API key from your SaveAPI dashboard |
 | `MAX_PROXY_BYTES` | Variable | No | Proxy response size limit; default is 19,500,000 bytes |
 
-The default path and parameter are generic assumptions. Verify them against the selected RapidAPI provider's documentation before expecting downloads to work.
+The Worker calls `https://api.saveapi.org/v1/download` with the source link as the `url` query parameter and authenticates using `Authorization: Bearer …`. The key stays on the server and must never be committed to GitHub or exposed in browser code.
 
-After changing Worker secrets or variables, confirm that `/api/health` returns `{"ok":true,"configured":true}`. This confirms the required values exist; it does **not** prove the provider endpoint or response format is compatible.
+After saving the secret, confirm that `/api/health` returns `{"ok":true,"configured":true,"provider":"saveapi"}`. This confirms the key is present; it does **not** prove every platform is working. Test a public video URL from each supported platform. SaveAPI's free balance is limited, so test links one at a time and check the provider dashboard for remaining credits.
+
 
 ## Supported content
 

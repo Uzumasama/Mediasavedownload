@@ -1,14 +1,10 @@
-// MediaBatchSave - Cloudflare Worker API (rute /api/*).
-// Tugasnya: menyimpan kunci RapidAPI di server (tidak terlihat pengunjung), memanggil API
-// downloader, merapikan hasilnya, dan meneruskan file agar tombol "Unduh" benar-benar
-// mengunduh (browser tidak bisa mengunduh file lintas-domain secara langsung).
+// MediaSaveDownload - Cloudflare Worker API (routes /api/*).
+// Keeps the SaveAPI key server-side, resolves supported public video links,
+// normalizes the response, and serves signed download links.
 //
-// Secrets/variables Cloudflare Worker:
-//   RAPIDAPI_KEY        wajib   kunci dari RapidAPI
-//   RAPIDAPI_HOST       wajib   mis. "tiktok-download-without-watermark.p.rapidapi.com"
-//   RAPIDAPI_PATH       opsional, default "/download"
-//   RAPIDAPI_URL_PARAM  opsional, nama parameter link, default "url"
-//   MAX_PROXY_BYTES     opsional, default 19500000 (batas respons streaming Netlify = 20 MB)
+// Cloudflare Worker secret/variables:
+//   SAVEAPI_KEY       required secret from SaveAPI
+//   MAX_PROXY_BYTES   optional, defaults to 19,500,000 bytes
 
 const PLATFORM_HOSTS = {
   TikTok: ['tiktok.com'],
@@ -47,7 +43,7 @@ function json(body, status = 200) {
 }
 
 function health(env) {
-  return json({ ok: true, configured: Boolean(env.RAPIDAPI_KEY && env.RAPIDAPI_HOST) });
+  return json({ ok: true, configured: Boolean(env.SAVEAPI_KEY), provider: 'saveapi' });
 }
 
 function detectPlatform(hostname) {
@@ -93,7 +89,7 @@ function isProfileLink(platform, u) {
 }
 
 async function handleDownload(url, env) {
-  if (!env.RAPIDAPI_KEY || !env.RAPIDAPI_HOST) {
+  if (!env.SAVEAPI_KEY) {
     return json({
       error: 'not_configured',
       message: 'The video service is not available yet. Please try again later.',
@@ -118,38 +114,49 @@ async function handleDownload(url, env) {
     return json({ error: 'profile_not_supported', message: 'This looks like a profile link. Paste a direct video post URL instead.' }, 422);
   }
 
-  const api = new URL(`https://${env.RAPIDAPI_HOST}${env.RAPIDAPI_PATH || '/download'}`);
-  api.searchParams.set(env.RAPIDAPI_URL_PARAM || 'url', parsed.href);
+  const api = new URL('https://api.saveapi.org/v1/download');
+  api.searchParams.set('url', parsed.href);
 
   let res;
   try {
     res = await fetch(api, {
       headers: {
-        'x-rapidapi-key': env.RAPIDAPI_KEY,
-        'x-rapidapi-host': env.RAPIDAPI_HOST,
+        authorization: `Bearer ${env.SAVEAPI_KEY}`,
         accept: 'application/json',
       },
       signal: AbortSignal.timeout(25000),
     });
   } catch {
-    return json({ error: 'upstream_timeout', message: 'API tidak merespons. Coba lagi beberapa saat.' }, 504);
+    return json({ error: 'upstream_timeout', message: 'SaveAPI did not respond. Please try again shortly.' }, 504);
   }
 
   const text = await res.text();
   let data = null;
   try { data = JSON.parse(text); } catch { /* bukan JSON */ }
 
-  if (!res.ok) {
-    let message = (data && (data.message || data.error || data.msg)) || `API menolak permintaan (kode ${res.status}).`;
-    if (res.status === 401 || res.status === 403) message = 'Kunci API ditolak. Periksa RAPIDAPI_KEY dan langganan API di RapidAPI.';
-    if (res.status === 429) message = 'Kuota API habis atau terlalu banyak permintaan. Coba lagi nanti.';
-    return json({ error: 'upstream_error', message: String(message).slice(0, 300) }, 502);
-  }
   if (!data || typeof data !== 'object') {
-    return json({ error: 'bad_response', message: 'Balasan API tidak bisa dibaca.' }, 502);
+    return json({ error: 'bad_response', message: 'SaveAPI returned an unreadable response.' }, 502);
   }
-  if (typeof data.code === 'number' && data.code !== 0 && data.code !== 200) {
-    return json({ error: 'upstream_error', message: String(data.msg || data.message || 'Gagal memproses link. Pastikan postingan bersifat publik.').slice(0, 300) }, 422);
+  const apiErrorCode = data.error && data.error.code ? String(data.error.code) : '';
+  if (!res.ok || data.success === false) {
+    let message = (data.error && data.error.message) || data.message || 'SaveAPI could not process this link.';
+    let status = res.ok ? 422 : (res.status >= 500 ? 502 : res.status);
+    if (res.status === 401 || apiErrorCode === 'INVALID_API_KEY' || apiErrorCode === 'MISSING_API_KEY') {
+      message = 'SaveAPI rejected the API key. Check the SAVEAPI_KEY secret in Cloudflare.';
+      status = 502;
+    } else if (res.status === 429 || apiErrorCode === 'QUOTA_EXCEEDED' || apiErrorCode === 'RATE_LIMITED') {
+      message = apiErrorCode === 'RATE_LIMITED'
+        ? 'SaveAPI rate limit reached. Please wait and try again.'
+        : 'SaveAPI credits are exhausted or the rate limit was reached. Check your SaveAPI balance.';
+      status = 429;
+    } else if (apiErrorCode === 'PRIVATE_CONTENT') {
+      message = 'This post is private or unavailable. Try a public video link.';
+      status = 422;
+    } else if (apiErrorCode === 'UNSUPPORTED_PLATFORM') {
+      message = 'This link is not supported by SaveAPI.';
+      status = 400;
+    }
+    return json({ error: (apiErrorCode || 'upstream_error').toLowerCase(), message: String(message).slice(0, 300) }, status);
   }
 
   const result = normalize(data);
@@ -158,7 +165,7 @@ async function handleDownload(url, env) {
     return json({ error: 'no_video', message: 'No supported video was found. Make sure the post is public and contains a supported video.' }, 422);
   }
 
-  const secret = env.RAPIDAPI_KEY;
+  const secret = env.SAVEAPI_KEY;
   const expires = Date.now() + 60 * 60 * 1000;
   const items = [];
   let n = 0;
@@ -182,13 +189,13 @@ async function handleDownload(url, env) {
 }
 
 async function handleFile(url, env) {
-  if (!env.RAPIDAPI_KEY) return json({ error: 'not_configured' }, 503);
+  if (!env.SAVEAPI_KEY) return json({ error: 'not_configured' }, 503);
   const target = url.searchParams.get('u') || '';
   const name = (url.searchParams.get('n') || 'media').replace(/[^\w.\-]+/g, '_').slice(0, 120);
   const expires = Number(url.searchParams.get('e') || 0);
   const sig = url.searchParams.get('s') || '';
 
-  const expected = await hmac(env.RAPIDAPI_KEY, `${target}\n${url.searchParams.get('n')}\n${expires}`);
+  const expected = await hmac(env.SAVEAPI_KEY, `${target}\n${url.searchParams.get('n')}\n${expires}`);
   if (!safeEqual(sig, expected)) return json({ error: 'forbidden', message: 'Tautan unduhan tidak valid.' }, 403);
   if (!expires || Date.now() > expires) return json({ error: 'expired', message: 'Tautan unduhan kedaluwarsa. Proses link sekali lagi.' }, 410);
 
@@ -229,7 +236,7 @@ async function handleFile(url, env) {
 // ---------- merapikan balasan API ----------
 
 function normalize(data) {
-  const roots = [data, data.data, data.result, data.response, data.results].filter((x) => x && typeof x === 'object' && !Array.isArray(x));
+  const roots = [data, data.meta, data.data, data.data && data.data.meta, data.result, data.response, data.results].filter((x) => x && typeof x === 'object' && !Array.isArray(x));
   const pick = (keys) => {
     for (const r of roots) for (const k of keys) if (typeof r[k] === 'string' && r[k].trim()) return r[k].trim();
     return '';
