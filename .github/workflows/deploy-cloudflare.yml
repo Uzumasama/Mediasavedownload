@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - cloudflare-migration
+      - seo-redesign
     paths-ignore:
       - "**/*.md"
   workflow_dispatch:
