@@ -114,6 +114,9 @@ async function handleDownload(url, env) {
     return json({ error: 'profile_not_supported', message: 'This looks like a profile link. Paste a direct video post URL instead.' }, 422);
   }
 
+  // YouTube uses SaveAPI's dedicated info -> create flow.
+  if (platform === 'YouTube') return await handleYouTubeInfo(parsed, env);
+
   const api = new URL('https://api.saveapi.org/v1/download');
   api.searchParams.set('url', parsed.href);
 
@@ -173,7 +176,7 @@ async function handleDownload(url, env) {
     n += 1;
     const ext = guessExt(it);
     const name = `${platform}_${slug(result.title) || 'media'}_${n}.${ext}`;
-    const sig = await hmac(secret, `${it.url}\n${name}\n${expires}`);
+    const sig = await hmac(secret, `${it.url}\n${name}\n${expires}\n`);
     const file = `/api/file?u=${encodeURIComponent(it.url)}&n=${encodeURIComponent(name)}&e=${expires}&s=${sig}`;
     items.push({
       type: it.type,
@@ -188,14 +191,110 @@ async function handleDownload(url, env) {
   return json({ platform, title: result.title, author: result.author, items });
 }
 
+async function handleYouTubeInfo(parsed, env) {
+  const api = new URL('https://api.saveapi.org/v1/youtube/info');
+  api.searchParams.set('url', parsed.href);
+  let res;
+  try {
+    res = await fetch(api, {
+      headers: { authorization: \`Bearer \${env.SAVEAPI_KEY}\`, accept: 'application/json' },
+      signal: AbortSignal.timeout(25000),
+    });
+  } catch {
+    return json({ error: 'upstream_timeout', message: 'SaveAPI did not respond. Please try again shortly.' }, 504);
+  }
+
+  let data;
+  try { data = await res.json(); } catch {
+    return json({ error: 'bad_response', message: 'SaveAPI returned an unreadable response.' }, 502);
+  }
+  if (!data || typeof data !== 'object') {
+    return json({ error: 'bad_response', message: 'SaveAPI returned an unreadable response.' }, 502);
+  }
+  if (!res.ok || data.success === false) return saveApiError(data, res.status);
+
+  const root = data.data && typeof data.data === 'object' ? data.data : data;
+  const formats = Array.isArray(root.formats) ? root.formats : (Array.isArray(data.formats) ? data.formats : []);
+  const title = String(root.title || data.title || root.meta?.title || 'YouTube video').slice(0, 200);
+  const author = String(root.author || data.author || root.author_name || data.author_name || root.meta?.author || '').slice(0, 80);
+  const thumb = root.thumbnail || data.thumbnail || root.meta?.thumbnail || '';
+  const videoFormats = formats.filter((f) => {
+    if (!f || typeof f !== 'object') return false;
+    const q = String(f.quality || f.format || f.label || '').trim();
+    const type = String(f.type || '').toLowerCase();
+    return /^(144|240|360|480|720|1080)p$/i.test(q) || (type === 'video' && /p$/i.test(q));
+  });
+  if (!videoFormats.length) {
+    return json({ error: 'no_video', message: 'SaveAPI did not return downloadable video qualities for this YouTube link.' }, 422);
+  }
+
+  const secret = env.SAVEAPI_KEY;
+  const expires = Date.now() + 60 * 60 * 1000;
+  const items = [];
+  const seen = new Set();
+  for (const format of videoFormats) {
+    const quality = String(format.quality || format.format || format.label || '').trim();
+    if (!/^(144|240|360|480|720|1080)p$/i.test(quality) || seen.has(quality)) continue;
+    seen.add(quality);
+    const name = \`YouTube_\${slug(title) || 'video'}_\${quality}.mp4\`;
+    const sig = await hmac(secret, \`\${parsed.href}\\n\${name}\\n\${expires}\\n\${quality}\`);
+    const file = \`/api/file?u=\${encodeURIComponent(parsed.href)}&q=\${encodeURIComponent(quality)}&n=\${encodeURIComponent(name)}&e=\${expires}&s=\${sig}\`;
+    items.push({
+      type: 'video',
+      quality,
+      watermark: false,
+      ext: 'mp4',
+      name,
+      thumb: /^https?:\\/\\//i.test(thumb) ? thumb : '',
+      size_mb: typeof format.size_mb === 'number' ? format.size_mb : null,
+      file,
+    });
+  }
+  if (!items.length) return json({ error: 'no_video', message: 'No supported YouTube video qualities were found.' }, 422);
+  items.sort((a, b) => parseInt(a.quality, 10) - parseInt(b.quality, 10));
+  return json({ platform: 'YouTube', title, author, items });
+}
+
+function saveApiError(data, upstreamStatus) {
+  const code = data && data.error && data.error.code ? String(data.error.code) : '';
+  let message = (data && data.error && data.error.message) || (data && data.message) || 'SaveAPI could not process this link.';
+  let status = upstreamStatus >= 500 ? 502 : (upstreamStatus || 422);
+  if (['INVALID_API_KEY', 'MISSING_API_KEY', 'KEY_REVOKED', 'KEY_EXPIRED', 'ACCOUNT_SUSPENDED', 'IP_NOT_ALLOWED'].includes(code)) {
+    message = 'SaveAPI rejected the API key or account. Check the SaveAPI key and account status.';
+    status = 502;
+  } else if (upstreamStatus === 429 || code === 'QUOTA_EXCEEDED' || code === 'RATE_LIMITED') {
+    message = code === 'RATE_LIMITED'
+      ? 'SaveAPI rate limit reached. Please wait and try again.'
+      : 'SaveAPI credits are exhausted or the rate limit was reached. Check your SaveAPI balance.';
+    status = 429;
+  } else if (code === 'PRIVATE_CONTENT') {
+    message = 'This post is private or unavailable. Try a public video link.';
+    status = 422;
+  } else if (code === 'UNSUPPORTED_PLATFORM' || code === 'INVALID_URL') {
+    message = 'SaveAPI could not process this YouTube link. Use a public video or Shorts URL.';
+    status = 400;
+  } else if (code === 'INVALID_FORMAT') {
+    message = 'That YouTube quality is not available. Process the link again and choose another quality.';
+    status = 422;
+  } else if (code === 'MEDIA_NOT_FOUND') {
+    message = 'This YouTube video is unavailable, restricted, or has no downloadable media.';
+    status = 422;
+  } else if (code === 'PLATFORM_NOT_ALLOWED') {
+    message = 'Your SaveAPI plan does not allow YouTube downloads.';
+    status = 403;
+  }
+  return json({ error: (code || 'upstream_error').toLowerCase(), message: String(message).slice(0, 300) }, status);
+}
+
 async function handleFile(url, env) {
   if (!env.SAVEAPI_KEY) return json({ error: 'not_configured' }, 503);
   const target = url.searchParams.get('u') || '';
   const name = (url.searchParams.get('n') || 'media').replace(/[^\w.\-]+/g, '_').slice(0, 120);
   const expires = Number(url.searchParams.get('e') || 0);
   const sig = url.searchParams.get('s') || '';
+  const quality = (url.searchParams.get('q') || '').trim();
 
-  const expected = await hmac(env.SAVEAPI_KEY, `${target}\n${url.searchParams.get('n')}\n${expires}`);
+  const expected = await hmac(env.SAVEAPI_KEY, `${target}\n${url.searchParams.get('n')}\n${expires}\n${quality}`);
   if (!safeEqual(sig, expected)) return json({ error: 'forbidden', message: 'Tautan unduhan tidak valid.' }, 403);
   if (!expires || Date.now() > expires) return json({ error: 'expired', message: 'Tautan unduhan kedaluwarsa. Proses link sekali lagi.' }, 410);
 
@@ -210,7 +309,40 @@ async function handleFile(url, env) {
 
   let up;
   try {
-    up = await fetchSafeMedia(src.href);
+    if (detectPlatform(src.hostname) === 'YouTube') {
+      if (!/^(144|240|360|480|720|1080)p$/i.test(quality)) {
+        return json({ error: 'invalid_quality', message: 'Pilihan kualitas YouTube tidak valid. Proses tautan sekali lagi.' }, 400);
+      }
+      const createUrl = new URL('https://api.saveapi.org/v1/youtube/create');
+      createUrl.searchParams.set('url', src.href);
+      createUrl.searchParams.set('quality', quality);
+      let createRes;
+      try {
+        createRes = await fetch(createUrl, {
+          headers: { authorization: \`Bearer \${env.SAVEAPI_KEY}\`, accept: 'application/json' },
+          signal: AbortSignal.timeout(60000),
+        });
+      } catch {
+        return json({ error: 'upstream_timeout', message: 'SaveAPI did not respond while preparing the YouTube file. Please try again.' }, 504);
+      }
+      let made;
+      try { made = await createRes.json(); } catch {
+        return json({ error: 'bad_response', message: 'SaveAPI returned an unreadable YouTube download response.' }, 502);
+      }
+      if (!createRes.ok || !made || made.success === false) return saveApiError(made || {}, createRes.status);
+      const madeRoot = made.data && typeof made.data === 'object' ? made.data : made;
+      const streamUrl = madeRoot.url || madeRoot.download_url || madeRoot.downloadUrl;
+      if (typeof streamUrl !== 'string') {
+        return json({ error: 'bad_response', message: 'SaveAPI did not return a YouTube download stream.' }, 502);
+      }
+      const mediaUrl = new URL(streamUrl);
+      if (mediaUrl.protocol !== 'https:' || mediaUrl.username || mediaUrl.password || isPrivateHost(mediaUrl.hostname)) {
+        return json({ error: 'bad_response', message: 'SaveAPI returned an invalid YouTube stream URL.' }, 502);
+      }
+      up = await fetchSafeMedia(mediaUrl.href);
+    } else {
+      up = await fetchSafeMedia(src.href);
+    }
   } catch {
     return json({ error: 'upstream_error', message: 'Gagal mengambil file.' }, 502);
   }
