@@ -477,14 +477,14 @@ footer {
     if (location.protocol === 'file:') {
       state.configured = false;
       els.banner.hidden = false;
-      els.banner.textContent = 'Halaman dibuka langsung dari file. Deploy proyek ini ke Netlify (lihat README) lalu buka lewat alamat website agar pengunduhan berfungsi.';
+      els.banner.textContent = 'Halaman dibuka langsung dari file. Buka website melalui alamat hosting agar fitur pengunduhan berfungsi.';
       return;
     }
     fetch('/api/health', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (d) {
       if (d && d.configured === false) {
         state.configured = false;
         els.banner.hidden = false;
-        els.banner.textContent = 'Server belum dihubungkan ke API unduhan. Pemilik situs perlu mengisi RAPIDAPI_KEY dan RAPIDAPI_HOST di pengaturan Netlify.';
+        els.banner.textContent = 'Server belum dihubungkan ke API unduhan. Pemilik situs perlu mengonfigurasi RAPIDAPI_KEY dan RAPIDAPI_HOST di Cloudflare Workers.';
       }
     }).catch(function () {
       state.configured = false;
