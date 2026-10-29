@@ -85,12 +85,8 @@ function isProfileLink(platform, u) {
       return first.startsWith('@') && !segs.includes('video') && !segs.includes('photo');
     case 'Instagram':
       return segs.length === 0 || (segs.length === 1 && !['p', 'reel', 'reels', 'tv', 'stories'].includes(first));
-    case 'Threads':
-      return first.startsWith('@') && !segs.includes('post');
     case 'YouTube':
       return first.startsWith('@') || ['channel', 'c', 'user'].includes(first);
-    case 'Twitter':
-      return segs.length === 1 && !['i', 'home', 'explore'].includes(first);
     default:
       return false;
   }
@@ -114,6 +110,9 @@ async function handleDownload(url, env) {
   const platform = detectPlatform(parsed.hostname);
   if (!platform) {
     return json({ error: 'unsupported', message: 'Unsupported platform. Use TikTok, Instagram Reels, Facebook Reels, YouTube Shorts, or Pinterest video links.' }, 400);
+  }
+  if (!isSupportedVideoUrl(platform, parsed)) {
+    return json({ error: 'unsupported_video_url', message: 'Please paste a supported video post URL: TikTok video, Instagram Reel, Facebook Reel, YouTube Short, or Pinterest video Pin.' }, 400);
   }
   if (isProfileLink(platform, parsed)) {
     return json({ error: 'profile_not_supported', message: 'This looks like a profile link. Paste a direct video post URL instead.' }, 422);
