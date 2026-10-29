@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mediasavedownload.cokso344.workers.dev/sitemap.xml
