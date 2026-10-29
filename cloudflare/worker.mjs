@@ -64,7 +64,7 @@ function isSupportedVideoUrl(platform, u) {
     case 'Facebook':
       return /^\/reel\//.test(path) || /^\/share\/r\//.test(path) || u.hostname.toLowerCase() === 'fb.watch';
     case 'YouTube':
-      return /^\/shorts\//.test(path) || u.hostname.toLowerCase() === 'youtu.be';
+      return /^\/shorts\//.test(path) || u.hostname.toLowerCase() === 'youtu.be' || (path === '/watch' && u.searchParams.has('v'));
     case 'Pinterest':
       return /^\/pin\/\d+/.test(path) || u.hostname.toLowerCase() === 'pin.it';
     default:
@@ -220,7 +220,7 @@ async function handleYouTubeInfo(parsed, env) {
   const thumb = root.thumbnail || data.thumbnail || root.meta?.thumbnail || '';
   const videoFormats = formats.filter((f) => {
     if (!f || typeof f !== 'object') return false;
-    const q = String(f.quality || f.format || f.label || '').trim();
+    const q = String(f.quality || f.label || f.format || '').trim();
     const type = String(f.type || '').toLowerCase();
     return /^(144|240|360|480|720|1080)p$/i.test(q) || (type === 'video' && /p$/i.test(q));
   });
@@ -233,7 +233,7 @@ async function handleYouTubeInfo(parsed, env) {
   const items = [];
   const seen = new Set();
   for (const format of videoFormats) {
-    const quality = String(format.quality || format.format || format.label || '').trim();
+    const quality = String(format.quality || format.label || format.format || '').trim();
     if (!/^(144|240|360|480|720|1080)p$/i.test(quality) || seen.has(quality)) continue;
     seen.add(quality);
     const name = `YouTube_${slug(title) || 'video'}_${quality}.mp4`;
@@ -319,7 +319,7 @@ async function handleFile(url, env) {
       let createRes;
       try {
         createRes = await fetch(createUrl, {
-          headers: { authorization: \`Bearer \${env.SAVEAPI_KEY}\`, accept: 'application/json' },
+          headers: { authorization: `Bearer ${env.SAVEAPI_KEY}`, accept: 'application/json' },
           signal: AbortSignal.timeout(60000),
         });
       } catch {
