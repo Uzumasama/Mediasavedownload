@@ -180,7 +180,7 @@ async function handleFile(url, env) {
   let src;
   try {
     src = new URL(target);
-    if (src.protocol !== 'https:' && src.protocol !== 'http:') throw new Error('bad');
+    if ((src.protocol !== 'https:' && src.protocol !== 'http:') || src.username || src.password || isPrivateHost(src.hostname)) throw new Error('bad');
   } catch {
     return json({ error: 'bad_url' }, 400);
   }
@@ -188,10 +188,7 @@ async function handleFile(url, env) {
 
   let up;
   try {
-    up = await fetch(src.href, {
-      headers: { 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36' },
-      redirect: 'follow',
-    });
+    up = await fetchSafeMedia(src.href);
   } catch {
     return json({ error: 'upstream_error', message: 'Gagal mengambil file.' }, 502);
   }
@@ -327,6 +324,23 @@ function safeEqual(a, b) {
   let r = 0;
   for (let i = 0; i < a.length; i++) r |= a.charCodeAt(i) ^ b.charCodeAt(i);
   return r === 0;
+}
+
+async function fetchSafeMedia(initialUrl) {
+  let current = new URL(initialUrl);
+  const headers = { 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36' };
+  for (let i = 0; i < 6; i++) {
+    if (!['https:', 'http:'].includes(current.protocol) || current.username || current.password || isPrivateHost(current.hostname)) {
+      throw new Error('Blocked unsafe media URL');
+    }
+    const response = await fetch(current.href, { headers, redirect: 'manual', signal: AbortSignal.timeout(25000) });
+    if (![301, 302, 303, 307, 308].includes(response.status)) return response;
+    const location = response.headers.get('location');
+    if (!location) return response;
+    try { await response.body?.cancel(); } catch {}
+    current = new URL(location, current);
+  }
+  throw new Error('Too many media redirects');
 }
 
 function isPrivateHost(h) {
