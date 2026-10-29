@@ -197,7 +197,7 @@ async function handleYouTubeInfo(parsed, env) {
   let res;
   try {
     res = await fetch(api, {
-      headers: { authorization: \`Bearer \${env.SAVEAPI_KEY}\`, accept: 'application/json' },
+      headers: { authorization: `Bearer ${env.SAVEAPI_KEY}`, accept: 'application/json' },
       signal: AbortSignal.timeout(25000),
     });
   } catch {
@@ -236,16 +236,16 @@ async function handleYouTubeInfo(parsed, env) {
     const quality = String(format.quality || format.format || format.label || '').trim();
     if (!/^(144|240|360|480|720|1080)p$/i.test(quality) || seen.has(quality)) continue;
     seen.add(quality);
-    const name = \`YouTube_\${slug(title) || 'video'}_\${quality}.mp4\`;
-    const sig = await hmac(secret, \`\${parsed.href}\\n\${name}\\n\${expires}\\n\${quality}\`);
-    const file = \`/api/file?u=\${encodeURIComponent(parsed.href)}&q=\${encodeURIComponent(quality)}&n=\${encodeURIComponent(name)}&e=\${expires}&s=\${sig}\`;
+    const name = `YouTube_${slug(title) || 'video'}_${quality}.mp4`;
+    const sig = await hmac(secret, `${parsed.href}\n${name}\n${expires}\n${quality}`);
+    const file = `/api/file?u=${encodeURIComponent(parsed.href)}&q=${encodeURIComponent(quality)}&n=${encodeURIComponent(name)}&e=${expires}&s=${sig}`;
     items.push({
       type: 'video',
       quality,
       watermark: false,
       ext: 'mp4',
       name,
-      thumb: /^https?:\\/\\//i.test(thumb) ? thumb : '',
+      thumb: /^https?:\/\//i.test(thumb) ? thumb : '',
       size_mb: typeof format.size_mb === 'number' ? format.size_mb : null,
       file,
     });
