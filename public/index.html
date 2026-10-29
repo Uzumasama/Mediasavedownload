@@ -1,11 +1,21 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<title>Downloader Media Sosial Batch - Hapus Watermark Gratis</title>
-<meta name="description" content="Unduh video dan foto TikTok, Instagram Reels, Facebook, YouTube Shorts, Twitter, Pinterest, Threads tanpa watermark, beberapa link sekaligus per kloter, cepat dan gratis.">
+<title>Free Social Media Video Downloader | MediaSaveDownload</title>
+<meta name="description" content="Download supported public videos from TikTok, Instagram Reels, Facebook Reels, YouTube Shorts and Pinterest. Paste links and save videos in batches for personal use.">
+<meta name="keywords" content="TikTok video downloader, Instagram Reels downloader, Facebook Reels downloader, YouTube Shorts downloader, Pinterest video downloader, social media video downloader">
+<link rel="canonical" href="https://mediasavedownload.cokso344.workers.dev/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://mediasavedownload.cokso344.workers.dev/">
+<meta property="og:title" content="Free Social Media Video Downloader | MediaSaveDownload">
+<meta property="og:description" content="Download supported public videos from TikTok, Instagram Reels, Facebook Reels, YouTube Shorts and Pinterest in one simple tool.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Free Social Media Video Downloader | MediaSaveDownload">
+<meta name="twitter:description" content="Save supported social media videos from TikTok, Reels, YouTube Shorts and Pinterest.">
+<meta name="theme-color" content="#4F46E5">
 <meta name="robots" content="index, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -292,45 +302,67 @@ footer {
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "MediaSaveDownload",
+  "url": "https://mediasavedownload.cokso344.workers.dev/",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "inLanguage": "en",
+  "description": "A browser-based tool for processing supported public video links from TikTok, Instagram Reels, Facebook Reels, YouTube Shorts and Pinterest.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type":"Question","name":"Is MediaSaveDownload free to use?","acceptedAnswer":{"@type":"Answer","text":"The website interface is free to access. Successful downloads depend on the availability of the configured service and source platform."}},
+    {"@type":"Question","name":"Can I download photos?","acceptedAnswer":{"@type":"Answer","text":"No. MediaSaveDownload is designed for supported videos only. Photo downloads are not offered."}},
+    {"@type":"Question","name":"Why did a video link fail?","acceptedAnswer":{"@type":"Answer","text":"A link may fail if the post is private, unavailable, unsupported, restricted by the platform, or not supported by the configured provider. Try a public post URL."}},
+    {"@type":"Question","name":"Can I download any video?","acceptedAnswer":{"@type":"Answer","text":"Only download videos you own or have permission to save. Respect copyright, privacy, and the terms of the source platform."}}
+  ]
+}
+</script>
 </head>
 <body>
 
 <header>
-  <a href="/" class="logo"><i class="fa-solid fa-cloud-arrow-down" aria-hidden="true"></i> MediaBatchSave</a>
+  <a href="/" class="logo"><i class="fa-solid fa-cloud-arrow-down" aria-hidden="true"></i> MediaSaveDownload</a>
 </header>
 
 <main class="container">
-  <div class="ad-space"><span>[ Ruang Iklan Banner Atas Header - 728x90 ]</span></div>
+  
 
   <section class="tool-card">
     <div class="tool-title">
-      <h1>Unduh Media Sosial Batch &amp; Tanpa Watermark</h1>
-      <p>Tempel satu atau beberapa link postingan (maksimal 25), lalu unduh hasilnya per kloter dalam file ZIP.</p>
+      <h1>Free Social Media Video Downloader</h1>
+      <p>Download supported videos from TikTok, Instagram Reels, Facebook Reels, YouTube Shorts and Pinterest. Paste up to 25 post links to process them in batches.</p>
     </div>
 
     <div id="configBanner" class="banner warn" role="status" hidden></div>
 
-    <div class="mode-tabs" role="group" aria-label="Jenis media">
-      <button type="button" class="tab-btn active" id="btnModeVideo" aria-pressed="true"><i class="fa-solid fa-video" aria-hidden="true"></i> Mode Video</button>
-      <button type="button" class="tab-btn" id="btnModeImage" aria-pressed="false"><i class="fa-solid fa-image" aria-hidden="true"></i> Mode Foto</button>
-    </div>
+    
 
     <div class="platform-grid" id="platformGrid" role="group" aria-label="Platform"></div>
 
-    <label class="field-label" for="profileUrl">Link postingan (satu link per baris)</label>
-    <textarea id="profileUrl" class="input-field" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off" inputmode="url" placeholder="https://www.tiktok.com/@nama_akun/video/1234567890"></textarea>
+    <label class="field-label" for="profileUrl">Video post URLs (one link per line)</label>
+    <textarea id="profileUrl" class="input-field" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off" inputmode="url" placeholder="https://www.tiktok.com/@username/video/1234567890"></textarea>
     <div class="input-hint">
       <span id="linkCount">0 link</span>
-      <span>Link profil/akun belum didukung, gunakan link per postingan.</span>
+      <span>Post links only; profile and account URLs are not supported.</span>
     </div>
 
     <div class="options-row">
       <label class="check" for="noWatermark">
         <input type="checkbox" id="noWatermark" checked>
-        <span><b>Hapus Watermark Otomatis</b> (pilih versi bersih, HD jika ada)</span>
+        <span><b>Prefer watermark-free video</b> (when available)</span>
       </label>
       <label class="select-wrap" for="batchSize">
-        <span>File per kloter</span>
+        <span>Videos per ZIP batch</span>
         <select id="batchSize">
           <option value="10">10</option>
           <option value="15">15</option>
@@ -340,24 +372,51 @@ footer {
       </label>
     </div>
 
-    <button type="button" class="btn-submit" id="btnSubmit"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> <span id="btnSubmitText">Proses Link</span></button>
+    <button type="button" class="btn-submit" id="btnSubmit"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> <span id="btnSubmitText">Find Videos</span></button>
 
     <div id="statusContainer" class="status-container" hidden>
-      <h2 id="statusText" aria-live="polite">Memproses...</h2>
+      <h2 id="statusText" aria-live="polite">Processing…</h2>
       <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar"><div id="progressFill" class="progress-fill"></div></div>
       <p id="statusSub" class="status-sub"></p>
       <div id="kloterBar" class="kloter-bar"></div>
       <div id="batchResults"></div>
     </div>
 
-    <p class="legal">Gunakan hanya untuk konten milik sendiri atau yang sudah mendapat izin pembuatnya. Hak cipta tetap milik pemilik konten dan aturan tiap platform berlaku.</p>
+    <p class="legal">Only download content you own or have permission to save. Copyright remains with the original creator, and each platform’s terms apply.</p>
   </section>
 
-  <div class="ad-space"><span>[ Ruang Iklan Native / Banner Bawah Tool ]</span></div>
+  <section class="tool-card" style="margin-top:1.25rem" aria-labelledby="how-to-use">
+    <h2 id="how-to-use">How to Download Social Media Videos</h2>
+    <p>MediaSaveDownload helps you process supported public video links from TikTok, Instagram Reels, Facebook Reels, YouTube Shorts and Pinterest. Paste post URLs above, process the links, then download available videos individually or in a ZIP batch. Availability depends on the source platform and the configured download provider.</p>
+    <ol style="margin:0.75rem 0 0 1.25rem;display:grid;gap:.5rem">
+      <li>Copy the URL of a specific video post. Profile links are not supported.</li>
+      <li>Paste one or more URLs into the input box, one per line.</li>
+      <li>Select <strong>Find Videos</strong> and wait for each link to be processed.</li>
+      <li>Download an individual video or use a ZIP batch for multiple results.</li>
+    </ol>
+    <h2 style="margin-top:1.5rem" id="supported-platforms">Supported Video Platforms</h2>
+    <p><strong>TikTok video downloader:</strong> process supported TikTok post URLs.</p>
+    <p><strong>Instagram Reels downloader:</strong> process supported public Reels links.</p>
+    <p><strong>Facebook Reels downloader:</strong> process supported public Facebook Reel links.</p>
+    <p><strong>YouTube Shorts downloader:</strong> process supported Shorts URLs.</p>
+    <p><strong>Pinterest video downloader:</strong> process supported video Pins.</p>
+    <h2 style="margin-top:1.5rem" id="faq">Frequently Asked Questions</h2>
+    <h3 style="margin-top:.75rem">Is MediaSaveDownload free to use?</h3>
+    <p>The website interface is free to access. Successful downloads depend on the availability of the configured service and source platform.</p>
+    <h3 style="margin-top:.75rem">Can I download photos?</h3>
+    <p>No. MediaSaveDownload is designed for supported videos only. Photo downloads are not offered.</p>
+    <h3 style="margin-top:.75rem">Why did a video link fail?</h3>
+    <p>A link may fail if the post is private, unavailable, unsupported, restricted by the platform, or not supported by the configured provider. Try a public post URL.</p>
+    <h3 style="margin-top:.75rem">Can I download any video?</h3>
+    <p>Only download videos you own or have permission to save. Respect copyright, privacy, and the terms of the source platform.</p>
+  </section>
+  </section>
+
+  
 </main>
 
 <footer>
-  <p>&copy; 2026 MediaBatchSave - All-in-One Social Media Batch Downloader Utility.</p>
+  <p>&copy; 2026 MediaSaveDownload. A simple social media video downloader.</p>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -367,16 +426,14 @@ footer {
 
   var MAX_LINKS = 25;
   var PLATFORMS = [
-    { name: 'TikTok', icon: 'fa-brands fa-tiktok', label: 'TikTok', hosts: ['tiktok.com'], example: 'https://www.tiktok.com/@nama_akun/video/1234567890' },
-    { name: 'Instagram', icon: 'fa-brands fa-instagram', label: 'Instagram', hosts: ['instagram.com', 'instagr.am'], example: 'https://www.instagram.com/reel/AbCdEfGhIjK/' },
-    { name: 'Facebook', icon: 'fa-brands fa-facebook', label: 'Facebook', hosts: ['facebook.com', 'fb.watch', 'fb.com'], example: 'https://www.facebook.com/watch/?v=1234567890' },
-    { name: 'YouTube', icon: 'fa-brands fa-youtube', label: 'Shorts', hosts: ['youtube.com', 'youtu.be'], example: 'https://www.youtube.com/shorts/AbCdEfGhIjK' },
-    { name: 'Twitter', icon: 'fa-brands fa-twitter', label: 'Twitter/X', hosts: ['twitter.com', 'x.com'], example: 'https://x.com/akun/status/1234567890' },
-    { name: 'Pinterest', icon: 'fa-brands fa-pinterest', label: 'Pinterest', hosts: ['pinterest.com', 'pin.it'], example: 'https://www.pinterest.com/pin/1234567890/' },
-    { name: 'Threads', icon: 'fa-solid fa-at', label: 'Threads', hosts: ['threads.net', 'threads.com'], example: 'https://www.threads.net/@akun/post/AbCdEfGhIjK' }
+    { name: 'TikTok', icon: 'fa-brands fa-tiktok', label: 'TikTok', hosts: ['tiktok.com'], example: 'https://www.tiktok.com/@username/video/1234567890' },
+    { name: 'Instagram', icon: 'fa-brands fa-instagram', label: 'Instagram Reels', hosts: ['instagram.com', 'instagr.am'], example: 'https://www.instagram.com/reel/AbCdEfGhIjK/' },
+    { name: 'Facebook', icon: 'fa-brands fa-facebook', label: 'Facebook Reels', hosts: ['facebook.com', 'fb.watch', 'fb.com'], example: 'https://www.facebook.com/reel/1234567890' },
+    { name: 'YouTube', icon: 'fa-brands fa-youtube', label: 'YouTube Shorts', hosts: ['youtube.com', 'youtu.be'], example: 'https://www.youtube.com/shorts/AbCdEfGhIjK' },
+    { name: 'Pinterest', icon: 'fa-brands fa-pinterest', label: 'Pinterest', hosts: ['pinterest.com', 'pin.it'], example: 'https://www.pinterest.com/pin/1234567890/' }
   ];
 
-  var state = { mode: 'video', platform: 'TikTok', busy: false, results: [], configured: true };
+  var state = { platform: 'TikTok', busy: false, results: [], configured: true };
 
   var $ = function (id) { return document.getElementById(id); };
   var els = {
@@ -418,7 +475,7 @@ footer {
   }
   function updateCount() {
     var n = parseLinks(els.input.value).length;
-    els.count.textContent = n + ' link' + (n > MAX_LINKS ? ' (hanya ' + MAX_LINKS + ' pertama yang diproses)' : '');
+    els.count.textContent = n + ' link' + (n === 1 ? '' : 's') + (n > MAX_LINKS ? ' (' + MAX_LINKS + ' maximum)' : '');
     var first = parseLinks(els.input.value)[0];
     if (first) {
       try {
@@ -429,14 +486,6 @@ footer {
   }
 
   // ---------- mode & platform ----------
-  function setMode(mode) {
-    state.mode = mode;
-    $('btnModeVideo').classList.toggle('active', mode === 'video');
-    $('btnModeImage').classList.toggle('active', mode === 'image');
-    $('btnModeVideo').setAttribute('aria-pressed', String(mode === 'video'));
-    $('btnModeImage').setAttribute('aria-pressed', String(mode === 'image'));
-    renderResults();
-  }
   function setPlatform(name) {
     state.platform = name;
     PLATFORMS.forEach(function (p) {
@@ -451,8 +500,6 @@ footer {
       [icon(p.icon), p.label]));
   });
   setPlatform('TikTok');
-  $('btnModeVideo').addEventListener('click', function () { setMode('video'); });
-  $('btnModeImage').addEventListener('click', function () { setMode('image'); });
   els.noWm.addEventListener('change', renderResults);
   els.size.addEventListener('change', renderResults);
   els.input.addEventListener('input', updateCount);
@@ -477,19 +524,19 @@ footer {
     if (location.protocol === 'file:') {
       state.configured = false;
       els.banner.hidden = false;
-      els.banner.textContent = 'Halaman dibuka langsung dari file. Buka website melalui alamat hosting agar fitur pengunduhan berfungsi.';
+      els.banner.textContent = 'This page was opened as a local file. Open the hosted website to use video downloads.';
       return;
     }
     fetch('/api/health', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (d) {
       if (d && d.configured === false) {
         state.configured = false;
         els.banner.hidden = false;
-        els.banner.textContent = 'Server belum dihubungkan ke API unduhan. Pemilik situs perlu mengonfigurasi RAPIDAPI_KEY dan RAPIDAPI_HOST di Cloudflare Workers.';
+        els.banner.textContent = 'The download API is not configured yet. The site owner must set RAPIDAPI_KEY and RAPIDAPI_HOST in Cloudflare Workers.';
       }
     }).catch(function () {
       state.configured = false;
       els.banner.hidden = false;
-      els.banner.textContent = 'Server unduhan tidak ditemukan. Pastikan situs di-deploy lengkap dengan folder netlify/functions (lihat README).';
+      els.banner.textContent = 'The download service could not be reached. Please try again later.';
     });
   }
 
@@ -506,8 +553,8 @@ footer {
       }
       return data;
     } catch (e) {
-      if (e.name === 'AbortError') throw new Error('Waktu habis. Coba lagi beberapa saat.');
-      if (e instanceof TypeError) throw new Error('Tidak bisa terhubung ke server. Periksa koneksi internet.');
+      if (e.name === 'AbortError') throw new Error('The request timed out. Please try again.');
+      if (e instanceof TypeError) throw new Error('Could not connect to the server. Check your internet connection.');
       throw e;
     } finally { clearTimeout(timer); }
   }
@@ -516,7 +563,7 @@ footer {
     if (state.busy) return;
     var all = parseLinks(els.input.value);
     if (!all.length) {
-      showStatus('Link belum diisi', 'Tempelkan minimal satu link postingan.', 0, true);
+      showStatus('No links added', 'Paste at least one video post URL.', 0, true);
       els.input.focus();
       return;
     }
@@ -524,20 +571,20 @@ footer {
     state.busy = true;
     state.results = [];
     els.submit.disabled = true;
-    els.submitText.textContent = 'Memproses...';
+    els.submitText.textContent = 'Processing…';
     els.kloter.textContent = '';
     els.results.textContent = '';
-    showStatus('Memproses ' + links.length + ' link...', 'Menghubungi server unduhan.', 3, false);
+    showStatus('Processing ' + links.length + ' link' + (links.length === 1 ? '' : 's') + '…', 'Contacting the video service.', 3, false);
 
     var ok = 0;
     for (var i = 0; i < links.length; i++) {
       var link = links[i];
-      showStatus('Memproses link ' + (i + 1) + ' dari ' + links.length, link, 3 + (i / links.length) * 97, false);
+      showStatus('Processing link ' + (i + 1) + ' of ' + links.length, link, 3 + (i / links.length) * 97, false);
       var entry = { link: link };
       var valid = true;
       try { valid = /^https?:$/.test(new URL(link).protocol); } catch (e) { valid = false; }
       if (!valid) {
-        entry.error = 'Bukan link yang valid. Awali dengan https://';
+        entry.error = 'Invalid URL. Use a link that starts with https://.';
       } else {
         try { entry.data = await fetchOne(link); ok++; } catch (e) { entry.error = e.message; }
       }
@@ -545,9 +592,9 @@ footer {
       renderResults();
     }
     var failed = links.length - ok;
-    var extra = all.length > MAX_LINKS ? ' ' + (all.length - MAX_LINKS) + ' link lain diabaikan (batas ' + MAX_LINKS + ').' : '';
-    if (ok === 0) showStatus('Tidak ada link yang berhasil', 'Periksa pesan pada tiap link di bawah.' + extra, 100, true);
-    else showStatus('Selesai: ' + ok + ' link berhasil' + (failed ? ', ' + failed + ' gagal' : ''), 'Unduh per file atau per kloter (.ZIP).' + extra, 100, false);
+    var extra = all.length > MAX_LINKS ? ' ' + (all.length - MAX_LINKS) + ' additional links ignored (maximum ' + MAX_LINKS + ').' : '';
+    if (ok === 0) showStatus('No videos could be processed', 'Check the message shown for each link below.' + extra, 100, true);
+    else showStatus('Done: ' + ok + ' link' + (ok === 1 ? '' : 's') + ' processed' + (failed ? ', ' + failed + ' failed' : ''), 'Download individual videos or ZIP batches.' + extra, 100, false);
     state.busy = false;
     els.submit.disabled = false;
     els.submitText.textContent = 'Proses Link';
@@ -555,7 +602,7 @@ footer {
 
   // ---------- tampilan hasil ----------
   function visibleItems(data) {
-    var list = data.items.filter(function (it) { return it.type === state.mode; });
+    var list = data.items.filter(function (it) { return it.type === 'video'; });
     var note = null;
     if (els.noWm.checked && list.length) {
       var clean = list.filter(function (it) { return !it.watermark; });
@@ -587,12 +634,7 @@ footer {
       ]);
       card.appendChild(head);
       if (!vis.list.length) {
-        var other = state.mode === 'video' ? 'image' : 'video';
-        var n = d.items.filter(function (it) { return it.type === other; }).length;
-        var row = el('div', { 'class': 'note-row' }, [
-          el('span', { text: 'Tidak ada ' + (state.mode === 'video' ? 'video' : 'foto') + ' di postingan ini' + (n ? ' (ada ' + n + ' ' + (other === 'video' ? 'video' : 'foto') + ').' : '.') })
-        ]);
-        if (n) row.appendChild(el('button', { type: 'button', 'class': 'btn-secondary', text: 'Pindah ke ' + (other === 'video' ? 'Mode Video' : 'Mode Foto'), on: { click: function () { setMode(other); } } }));
+        var row = el('div', { 'class': 'note-row', text: 'No supported video was found in this post.' });
         card.appendChild(row);
       } else {
         if (vis.note) card.appendChild(el('div', { 'class': 'note-row', text: vis.note }));
@@ -613,18 +655,18 @@ footer {
     if (it.thumb) {
       thumb = el('img', { 'class': 'thumb', src: it.thumb, alt: '', loading: 'lazy', referrerpolicy: 'no-referrer' });
       thumb.addEventListener('error', function () {
-        var ph = el('div', { 'class': 'thumb' }, [icon(it.type === 'video' ? 'fa-solid fa-film' : 'fa-solid fa-image')]);
+        var ph = el('div', { 'class': 'thumb' }, [icon('fa-solid fa-film')]);
         if (thumb.parentNode) thumb.parentNode.replaceChild(ph, thumb);
       });
     } else {
       thumb = el('div', { 'class': 'thumb' }, [icon(it.type === 'video' ? 'fa-solid fa-film' : 'fa-solid fa-image')]);
     }
-    var label = (it.type === 'video' ? 'Video' : 'Foto') + (it.quality ? ' ' + it.quality : '') + ' · ' + it.ext.toUpperCase();
+    var label = 'Video' + (it.quality ? ' ' + it.quality : '') + ' · ' + it.ext.toUpperCase();
     var meta = el('div', { 'class': 'item-meta' }, [
       el('strong', { text: label }),
-      el('span', { 'class': 'badge ' + (it.watermark ? 'warn' : ''), text: it.watermark ? 'Berwatermark' : 'Tanpa watermark', style: 'margin-left:0' })
+      el('span', { 'class': 'badge ' + (it.watermark ? 'warn' : ''), text: it.watermark ? 'Watermarked' : 'No watermark', style: 'margin-left:0' })
     ]);
-    var a = el('a', { 'class': 'btn-download', href: it.file, download: it.name }, [icon('fa-solid fa-download'), 'Unduh']);
+    var a = el('a', { 'class': 'btn-download', href: it.file, download: it.name }, [icon('fa-solid fa-download'), 'Download']);
     return el('div', { 'class': 'item-row' }, [thumb, meta, a]);
   }
 
@@ -634,12 +676,12 @@ footer {
     var chunks = [];
     for (var i = 0; i < flat.length; i += size) chunks.push(flat.slice(i, i + size));
     chunks.forEach(function (chunk, idx) {
-      var btn = el('button', { type: 'button', 'class': 'btn-download' }, [icon('fa-solid fa-file-zipper'), 'Unduh Kloter ' + (idx + 1) + ' (.ZIP)']);
-      var sub = el('p', { 'class': 'muted', text: chunk.length + ' ' + (state.mode === 'video' ? 'video' : 'foto') });
+      var btn = el('button', { type: 'button', 'class': 'btn-download' }, [icon('fa-solid fa-file-zipper'), 'Download Batch ' + (idx + 1) + ' (.ZIP)']);
+      var sub = el('p', { 'class': 'muted', text: chunk.length + ' videos' });
       btn.addEventListener('click', function () { downloadZip(chunk, idx + 1, btn, sub); });
       els.kloter.appendChild(el('div', { 'class': 'batch-card', style: 'margin-top:0' }, [
         el('div', { 'class': 'batch-header', style: 'margin-bottom:0.25rem' }, [
-          el('div', {}, [el('strong', { text: 'Kloter ' + (idx + 1) }), el('span', { 'class': 'badge', text: state.mode === 'video' ? 'Video' : 'Foto' })]),
+          el('div', {}, [el('strong', { text: 'Batch ' + (idx + 1) }), el('span', { 'class': 'badge', text: 'Video' })]),
           btn
         ]),
         sub
@@ -660,7 +702,7 @@ footer {
     if (btn.disabled) return;
     btn.disabled = true;
     try {
-      if (typeof JSZip === 'undefined') throw new Error('Pustaka ZIP gagal dimuat. Unduh file satu per satu dengan tombol Unduh.');
+      if (typeof JSZip === 'undefined') throw new Error('The ZIP library failed to load. Download videos one by one instead.');
       var zip = new JSZip();
       var done = 0, failed = 0, next = 0;
       var used = {};
@@ -676,17 +718,17 @@ footer {
             zip.file(name, blob);
           } catch (e) { failed++; }
           done++;
-          sub.textContent = 'Mengunduh ' + done + ' dari ' + chunk.length + '...';
+          sub.textContent = 'Downloading ' + done + ' of ' + chunk.length + '…';
         }
       }
       await Promise.all([worker(), worker(), worker()]);
-      if (failed === chunk.length) throw new Error('Semua file gagal diambil. Proses link sekali lagi lalu coba lagi.');
-      sub.textContent = 'Menyusun ZIP...';
+      if (failed === chunk.length) throw new Error('All files failed to download. Process the links again and retry.');
+      sub.textContent = 'Creating ZIP…';
       var out = await zip.generateAsync({ type: 'blob', compression: 'STORE' });
       triggerSave(out, 'MediaBatchSave_kloter_' + number + '.zip');
-      sub.textContent = (chunk.length - failed) + ' file diunduh' + (failed ? ', ' + failed + ' gagal' : '') + '.';
+      sub.textContent = (chunk.length - failed) + ' videos downloaded' + (failed ? ', ' + failed + ' failed' : '') + '.';
     } catch (e) {
-      sub.textContent = e.message || 'Gagal membuat ZIP.';
+      sub.textContent = e.message || 'Could not create the ZIP file.';
     } finally {
       btn.disabled = false;
     }
