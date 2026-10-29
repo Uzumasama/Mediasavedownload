@@ -1,7 +1,9 @@
 {
-  "name": "mediabatchsave",
+  "name": "mediasavedownload",
   "version": "1.0.0",
   "private": true,
-  "description": "Downloader media sosial batch (Netlify)",
-  "engines": { "node": ">=20" }
+  "description": "Responsive English social video downloader deployed on Cloudflare Workers",
+  "engines": {
+    "node": ">=20"
+  }
 }
