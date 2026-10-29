@@ -251,7 +251,7 @@ async function handleYouTubeInfo(parsed, env) {
     });
   }
   if (!items.length) return json({ error: 'no_video', message: 'No supported YouTube video qualities were found.' }, 422);
-  items.sort((a, b) => parseInt(a.quality, 10) - parseInt(b.quality, 10));
+  items.sort((a, b) => parseInt(b.quality, 10) - parseInt(a.quality, 10));
   return json({ platform: 'YouTube', title, author, items });
 }
 
