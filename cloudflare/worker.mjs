@@ -26,7 +26,8 @@ const AUD_EXT = /\.(mp3|m4a|aac|wav|ogg)(\?|#|$)/i;
 
 const enc = new TextEncoder();
 
-export default async (request, env) => {
+export default {
+  async fetch(request, env) {
   const url = new URL(request.url);
   try {
     if (url.pathname === '/api/health') return health(env);
@@ -37,6 +38,7 @@ export default async (request, env) => {
     return json({ error: 'server_error', message: 'Terjadi kesalahan di server. Coba lagi sebentar.' }, 500);
   }
   return json({ error: 'not_found' }, 404);
+  },
 };
 
 function json(body, status = 200) {
